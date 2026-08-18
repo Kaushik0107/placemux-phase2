@@ -1,0 +1,33 @@
+[
+  {
+    "student_id": "STU_1001",
+    "skills": ["Python", "React", "MongoDB"],
+    "verified_skill_scores": {
+      "Python": 85,
+      "React": 72,
+      "MongoDB": 65
+    },
+    "experience_years": 0.5,
+    "education": {
+      "degree": "B.E.",
+      "branch": "Information Science"
+    },
+    "certifications": [],
+    "preferred_roles": [
+      "Software Engineer",
+      "Full Stack Developer"
+    ],
+    "location": "Bangalore",
+    "work_mode": [
+      "Remote",
+      "Hybrid"
+    ],
+    "experience_level": "Fresher",
+    "availability": "Immediate",
+    "salary_expectation": 600000,
+    "projects": [
+      "Full Stack Web Application",
+      "Machine Learning Project"
+    ]
+  }
+]

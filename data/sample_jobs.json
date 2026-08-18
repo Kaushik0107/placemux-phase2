@@ -1,0 +1,36 @@
+[
+  {
+    "job_id": "JOB_2045",
+    "job_title": "Junior Python Developer",
+    "company": "ABC Technologies",
+    "required_skills": [
+      "Python",
+      "MongoDB"
+    ],
+    "preferred_skills": [
+      "React"
+    ],
+    "required_skill_scores": {
+      "Python": 70,
+      "MongoDB": 50
+    },
+    "experience_required": 0,
+    "education_required": {
+      "degree": "B.E.",
+      "branch": "Information Science"
+    },
+    "certifications": [],
+    "location": "Bangalore",
+    "work_mode": [
+      "Hybrid",
+      "Remote"
+    ],
+    "experience_level": "Fresher",
+    "joining_requirement": "Immediate",
+    "salary_range": {
+      "min": 500000,
+      "max": 800000
+    },
+    "domain": "Software Development"
+  }
+]
