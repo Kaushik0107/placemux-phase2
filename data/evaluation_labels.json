@@ -1,0 +1,98 @@
+[
+  {
+    "student_id": "EVAL_STU_001",
+    "job_id": "EVAL_JOB_001",
+    "expected_match": 1,
+    "reason": "Python and MongoDB verified scores meet the required thresholds."
+  },
+  {
+    "student_id": "EVAL_STU_001",
+    "job_id": "EVAL_JOB_002",
+    "expected_match": 0,
+    "reason": "Required Java, Spring Boot and MySQL competencies are missing."
+  },
+  {
+    "student_id": "EVAL_STU_001",
+    "job_id": "EVAL_JOB_003",
+    "expected_match": 0,
+    "reason": "Django competency is missing and required experience is not satisfied."
+  },
+  {
+    "student_id": "EVAL_STU_001",
+    "job_id": "EVAL_JOB_004",
+    "expected_match": 0,
+    "reason": "Django and PostgreSQL competencies are missing."
+  },
+  {
+    "student_id": "EVAL_STU_002",
+    "job_id": "EVAL_JOB_001",
+    "expected_match": 0,
+    "reason": "Required Python and MongoDB competencies are missing."
+  },
+  {
+    "student_id": "EVAL_STU_002",
+    "job_id": "EVAL_JOB_002",
+    "expected_match": 1,
+    "reason": "Java, Spring Boot and MySQL verified scores meet the required thresholds."
+  },
+  {
+    "student_id": "EVAL_STU_002",
+    "job_id": "EVAL_JOB_003",
+    "expected_match": 0,
+    "reason": "Required Python and Django competencies are missing."
+  },
+  {
+    "student_id": "EVAL_STU_002",
+    "job_id": "EVAL_JOB_004",
+    "expected_match": 0,
+    "reason": "Required Python, Django and PostgreSQL competencies are missing."
+  },
+  {
+    "student_id": "EVAL_STU_003",
+    "job_id": "EVAL_JOB_001",
+    "expected_match": 0,
+    "reason": "MongoDB is missing and Python score 55 is below the required threshold of 70."
+  },
+  {
+    "student_id": "EVAL_STU_003",
+    "job_id": "EVAL_JOB_002",
+    "expected_match": 0,
+    "reason": "Required Java, Spring Boot and MySQL competencies are missing."
+  },
+  {
+    "student_id": "EVAL_STU_003",
+    "job_id": "EVAL_JOB_003",
+    "expected_match": 0,
+    "reason": "Django is missing, Python score is below the threshold, and experience is insufficient."
+  },
+  {
+    "student_id": "EVAL_STU_003",
+    "job_id": "EVAL_JOB_004",
+    "expected_match": 0,
+    "reason": "Django and PostgreSQL are missing and Python score is below the threshold."
+  },
+  {
+    "student_id": "EVAL_STU_004",
+    "job_id": "EVAL_JOB_001",
+    "expected_match": 0,
+    "reason": "MongoDB is missing."
+  },
+  {
+    "student_id": "EVAL_STU_004",
+    "job_id": "EVAL_JOB_002",
+    "expected_match": 0,
+    "reason": "Required Java, Spring Boot and MySQL competencies are missing."
+  },
+  {
+    "student_id": "EVAL_STU_004",
+    "job_id": "EVAL_JOB_003",
+    "expected_match": 1,
+    "reason": "Python and Django verified scores meet the required thresholds."
+  },
+  {
+    "student_id": "EVAL_STU_004",
+    "job_id": "EVAL_JOB_004",
+    "expected_match": 1,
+    "reason": "Python, Django and PostgreSQL verified scores meet the required thresholds."
+  }
+]

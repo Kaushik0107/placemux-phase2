@@ -1,0 +1,112 @@
+[
+  {
+    "student_id": "EVAL_STU_001",
+    "skills": ["Python", "MongoDB", "React"],
+    "verified_skill_scores": {
+      "Python": 90,
+      "MongoDB": 75,
+      "React": 80
+    },
+    "experience_years": 1.0,
+    "education": {
+      "degree": "B.E.",
+      "branch": "Information Science"
+    },
+    "certifications": [],
+    "preferred_roles": [
+      "Python Developer",
+      "Full Stack Developer"
+    ],
+    "location": "Bangalore",
+    "work_mode": ["Hybrid", "Remote"],
+    "experience_level": "Fresher",
+    "availability": "Immediate",
+    "salary_expectation": 600000,
+    "projects": [
+      "Python Web Application",
+      "Machine Learning Project"
+    ]
+  },
+  {
+    "student_id": "EVAL_STU_002",
+    "skills": ["Java", "Spring Boot", "MySQL"],
+    "verified_skill_scores": {
+      "Java": 85,
+      "Spring Boot": 80,
+      "MySQL": 75
+    },
+    "experience_years": 1.5,
+    "education": {
+      "degree": "B.E.",
+      "branch": "Computer Science"
+    },
+    "certifications": [],
+    "preferred_roles": [
+      "Java Developer",
+      "Backend Developer"
+    ],
+    "location": "Bangalore",
+    "work_mode": ["On-site", "Hybrid"],
+    "experience_level": "Junior",
+    "availability": "30 Days",
+    "salary_expectation": 700000,
+    "projects": [
+      "Spring Boot Application",
+      "Database Management System"
+    ]
+  },
+  {
+    "student_id": "EVAL_STU_003",
+    "skills": ["Python", "HTML", "CSS"],
+    "verified_skill_scores": {
+      "Python": 55,
+      "HTML": 80,
+      "CSS": 75
+    },
+    "experience_years": 0.5,
+    "education": {
+      "degree": "B.E.",
+      "branch": "Information Science"
+    },
+    "certifications": [],
+    "preferred_roles": [
+      "Frontend Developer"
+    ],
+    "location": "Bangalore",
+    "work_mode": ["Remote"],
+    "experience_level": "Fresher",
+    "availability": "Immediate",
+    "salary_expectation": 500000,
+    "projects": [
+      "Portfolio Website"
+    ]
+  },
+  {
+    "student_id": "EVAL_STU_004",
+    "skills": ["Python", "Django", "PostgreSQL"],
+    "verified_skill_scores": {
+      "Python": 88,
+      "Django": 82,
+      "PostgreSQL": 78
+    },
+    "experience_years": 2.0,
+    "education": {
+      "degree": "B.E.",
+      "branch": "Information Science"
+    },
+    "certifications": [],
+    "preferred_roles": [
+      "Backend Developer",
+      "Python Developer"
+    ],
+    "location": "Mysore",
+    "work_mode": ["Remote"],
+    "experience_level": "Junior",
+    "availability": "Immediate",
+    "salary_expectation": 750000,
+    "projects": [
+      "Django REST API",
+      "Database Application"
+    ]
+  }
+]

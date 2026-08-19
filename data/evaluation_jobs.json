@@ -1,0 +1,139 @@
+[
+  {
+    "job_id": "EVAL_JOB_001",
+    "job_title": "Python Developer",
+    "company": "Sample Tech A",
+    "required_skills": [
+      "Python",
+      "MongoDB"
+    ],
+    "preferred_skills": [
+      "React"
+    ],
+    "required_skill_scores": {
+      "Python": 70,
+      "MongoDB": 60
+    },
+    "experience_required": 0,
+    "education_required": {
+      "degree": "B.E.",
+      "branch": "Information Science"
+    },
+    "certifications": [],
+    "location": "Bangalore",
+    "work_mode": [
+      "Hybrid",
+      "Remote"
+    ],
+    "experience_level": "Fresher",
+    "joining_requirement": "Immediate",
+    "salary_range": {
+      "min": 500000,
+      "max": 800000
+    },
+    "domain": "Software Development"
+  },
+  {
+    "job_id": "EVAL_JOB_002",
+    "job_title": "Java Backend Developer",
+    "company": "Sample Tech B",
+    "required_skills": [
+      "Java",
+      "Spring Boot",
+      "MySQL"
+    ],
+    "preferred_skills": [
+      "Docker"
+    ],
+    "required_skill_scores": {
+      "Java": 70,
+      "Spring Boot": 65,
+      "MySQL": 60
+    },
+    "experience_required": 1,
+    "education_required": {
+      "degree": "B.E.",
+      "branch": "Computer Science"
+    },
+    "certifications": [],
+    "location": "Bangalore",
+    "work_mode": [
+      "On-site",
+      "Hybrid"
+    ],
+    "experience_level": "Junior",
+    "joining_requirement": "30 Days",
+    "salary_range": {
+      "min": 600000,
+      "max": 900000
+    },
+    "domain": "Software Development"
+  },
+  {
+    "job_id": "EVAL_JOB_003",
+    "job_title": "Senior Python Developer",
+    "company": "Sample Tech C",
+    "required_skills": [
+      "Python",
+      "Django"
+    ],
+    "preferred_skills": [
+      "PostgreSQL"
+    ],
+    "required_skill_scores": {
+      "Python": 70,
+      "Django": 70
+    },
+    "experience_required": 2,
+    "education_required": {
+      "degree": "B.E.",
+      "branch": "Information Science"
+    },
+    "certifications": [],
+    "location": "Bangalore",
+    "work_mode": [
+      "Hybrid"
+    ],
+    "experience_level": "Senior",
+    "joining_requirement": "Immediate",
+    "salary_range": {
+      "min": 700000,
+      "max": 1000000
+    },
+    "domain": "Software Development"
+  },
+  {
+    "job_id": "EVAL_JOB_004",
+    "job_title": "Django Backend Developer",
+    "company": "Sample Tech D",
+    "required_skills": [
+      "Python",
+      "Django",
+      "PostgreSQL"
+    ],
+    "preferred_skills": [],
+    "required_skill_scores": {
+      "Python": 70,
+      "Django": 70,
+      "PostgreSQL": 60
+    },
+    "experience_required": 1,
+    "education_required": {
+      "degree": "B.E.",
+      "branch": "Information Science"
+    },
+    "certifications": [],
+    "location": "Bangalore",
+    "work_mode": [
+      "Remote",
+      "Hybrid"
+    ],
+    "experience_level": "Junior",
+    "joining_requirement": "Immediate",
+    "salary_range": {
+      "min": 600000,
+      "max": 900000
+    },
+    "domain": "Software Development"
+  }
+]
