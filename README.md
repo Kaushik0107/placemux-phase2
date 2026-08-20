@@ -72,6 +72,51 @@ Validate whether a student's verified skill scores meet the minimum competency t
 - JSON
 - Pytest
 
+# PlaceMux Phase 2 — Task 3: Search and Discovery
+
+## 1. Objective
+
+The objective of Task 3 is to implement the search and discovery layer for the PlaceMux matching system.
+
+The system uses the existing student-job matching score from Phase 2 to:
+
+- Rank jobs for a student
+- Rank candidates for a job
+- Identify matched and missing skills
+- Provide an explainable matching result
+
+The ranking system is designed to make job discovery and candidate discovery easier and more transparent.
+
+---
+
+## 2. Task 3 Components
+
+The Task 3 implementation is contained in the `search/` package.
+
+### Job Ranking
+
+File:
+
+`search/job_ranking.py`
+
+This module ranks available jobs for a given student.
+
+The process:
+
+1. Load student and job data.
+2. Find the requested student.
+3. Calculate the existing matching score for every job.
+4. Include the match breakdown.
+5. Identify matched required skills.
+6. Identify missing required skills.
+7. Sort jobs by match score in descending order.
+8. Return the top-K jobs.
+
+Example:
+
+```python
+rank_jobs_for_student("EVAL_STU_001", 4)
+
 ## Project Structure
 
 ```text
