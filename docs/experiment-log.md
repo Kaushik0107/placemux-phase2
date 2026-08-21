@@ -82,3 +82,55 @@ requirements to fail.
 
 These tests confirm the expected boundary and failure behavior of the
 threshold validation implementation.
+
+## 2026-08-21 — Explainable Matching Integration
+
+### Goal
+Attach a structured explanation payload to every ranked match, expose it through the API, and persist it as an audit record.
+
+### Data and evaluation split
+- Held-out evaluation data: 16 labelled student-job pairs
+- Students: 4
+- Jobs: 4
+- Decision rule: `SHORTLISTED` only when every required verified-skill threshold passes
+
+### Results
+- True positives: 4
+- True negatives: 12
+- False positives: 0
+- False negatives: 0
+- Precision: 1.0000
+- Recall: 1.0000
+- False-positive rate: 0.0000
+- Explanation payload coverage: 1.0000
+
+### Explanation payload
+Each response includes the decision, score, threshold result, matched and missing skills, per-skill threshold evidence, weighted score breakdown, and a plain-English summary.
+
+### API audit evidence
+Each successful matching API request persists one timestamped explanation record for every returned match in `data/explanation_audit.jsonl`.
+
+### Interpretation
+These results apply to the supplied held-out dataset. They are evidence of correct behaviour on these 16 labelled pairs, not a claim of generalisation beyond this dataset.
+
+## Experiment 3 — Task 3 Search and Discovery Ranking
+
+### Goal
+Rank jobs for students and rank candidates for companies using the existing match score, with a structured explanation for every result.
+
+### Held-out evaluation
+The same 16 labelled student-job pairs were evaluated in both directions:
+
+| Ranking direction | Precision | Recall | False-positive rate | Explanation coverage |
+|---|---:|---:|---:|---:|
+| Job ranking for students | 1.0000 | 1.0000 | 0.0000 | 1.0000 |
+| Candidate ranking for companies | 1.0000 | 1.0000 | 0.0000 | 1.0000 |
+
+### Live API evidence
+- Student job ranking: `POST /api/v1/matching/jobs`
+- Company candidate ranking: `POST /api/v1/ranking/candidates`
+- Both endpoints return scores, threshold decisions, matched and missing skills, per-skill evidence, score breakdowns, and a plain-English explanation.
+- Every returned explanation is persisted in `data/explanation_audit.jsonl`.
+
+### Current v1 limitation
+This version ranks data loaded from JSON files. It is correct for the current small, real-shaped dataset, but it does not yet use a search index or have a measured large-scale search-latency benchmark.

@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from matching.scoring import calculate_match
+from matching.feature_matching import generate_matching_decision
 
 
 BASE_DIR = Path(__file__).resolve().parents[1]
@@ -12,7 +12,7 @@ JOBS_FILE = DATA_DIR / "evaluation_jobs.json"
 
 
 def load_json(path):
-    with open(path, "r", encoding="utf-8") as file:
+    with path.open("r", encoding="utf-8") as file:
         return json.load(file)
 
 
@@ -25,9 +25,7 @@ def load_jobs():
 
 
 def get_student(student_id):
-    students = load_students()
-
-    for student in students:
+    for student in load_students():
         if student["student_id"] == student_id:
             return student
 
@@ -40,38 +38,22 @@ def rank_jobs_for_student(student_id, top_k=10):
     if student is None:
         raise ValueError("Student profile not found")
 
-    jobs = load_jobs()
-
     ranked_jobs = []
 
-    for job in jobs:
-        match_score, breakdown = calculate_match(student, job)
-
-        matched_skills = sorted(
-            set(student.get("skills", []))
-            .intersection(set(job.get("required_skills", [])))
-        )
-
-        missing_skills = sorted(
-            set(job.get("required_skills", []))
-            - set(student.get("skills", []))
-        )
+    for job in load_jobs():
+        decision = generate_matching_decision(student, job)
 
         ranked_jobs.append(
             {
-                "job_id": job["job_id"],
                 "job_title": job["job_title"],
                 "company": job.get("company", ""),
-                "match_score": match_score,
-                "match_breakdown": breakdown,
-                "matched_skills": matched_skills,
-                "missing_skills": missing_skills,
+                **decision,
             }
         )
 
     ranked_jobs.sort(
         key=lambda item: item["match_score"],
-        reverse=True
+        reverse=True,
     )
 
     return ranked_jobs[:top_k]

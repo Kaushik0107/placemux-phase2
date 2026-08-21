@@ -1,107 +1,83 @@
-# PlaceMux Matching API Contract
+# PlaceMux Matching and Ranking API Contract
 
-## 1. Endpoint
+## Purpose
 
+The API provides two explainable discovery flows:
+
+1. Students receive ranked jobs.
+2. Companies receive ranked candidates.
+
+Every returned result includes a match score, a threshold-based decision, skill evidence, a score breakdown, and a plain-English explanation. Each returned explanation is persisted in `data/explanation_audit.jsonl`.
+
+## 1. Student Job Ranking
+
+### Endpoint
+
+```text
 POST /api/v1/matching/jobs
+```
 
-## 2. Purpose
-
-This API returns ranked job matches for a student using the defined student-job feature space.
-
-## 3. Request Parameters
+### Parameters
 
 | Parameter | Type | Required | Description |
-|---|---|---|---|
-| student_id | String | Yes | Unique student identifier |
-| top_k | Integer | No | Maximum number of jobs to return |
+|---|---|---:|---|
+| `student_id` | string | Yes | Student identifier |
+| `top_k` | integer | No | Maximum number of jobs to return; defaults to 10 |
+| `dataset` | string | No | `sample` or `evaluation`; defaults to `sample` |
 
-## 4. Example Request
+### Example request
 
-POST /api/v1/matching/jobs?student_id=STU_1001&top_k=10
+```text
+POST /api/v1/matching/jobs?student_id=EVAL_STU_004&top_k=1&dataset=evaluation
+```
 
-## 5. Response
+## 2. Company Candidate Ranking
 
-The API returns the student ID and a ranked list of matching jobs.
+### Endpoint
 
-Example response:
+```text
+POST /api/v1/ranking/candidates
+```
 
-{
-  "student_id": "STU_1001",
-  "matches": [
-    {
-      "job_id": "JOB_2045",
-      "job_title": "Junior Python Developer",
-      "company": "ABC Technologies",
-      "match_score": 91.4,
-      "match_breakdown": {
-        "skill_match": 95,
-        "proficiency_match": 92,
-        "experience_match": 85,
-        "role_match": 94,
-        "location_match": 100,
-        "education_match": 100,
-        "availability_match": 100,
-        "salary_match": 100
-      },
-      "matched_skills": [
-        "Python",
-        "MongoDB"
-      ],
-      "missing_skills": [
-        "Docker"
-      ]
-    }
-  ]
-}
+### Parameters
 
-## 6. Matching Score
+| Parameter | Type | Required | Description |
+|---|---|---:|---|
+| `job_id` | string | Yes | Job identifier |
+| `top_k` | integer | No | Maximum number of candidates to return; defaults to 10 |
 
-The initial matching score uses the following weights:
+### Example request
 
-- Skill Match: 35%
-- Proficiency Match: 20%
-- Experience Match: 10%
-- Role Match: 10%
-- Location/Work Mode Match: 10%
-- Education Match: 5%
-- Availability Match: 5%
-- Salary Match: 5%
+```text
+POST /api/v1/ranking/candidates?job_id=EVAL_JOB_004&top_k=2
+```
 
-Total weight: 100%
+## 3. Explainable Result Fields
 
-## 7. Match Breakdown
+Each ranked job or candidate includes:
 
-The API provides the individual scores used to calculate the overall match score.
+| Field | Description |
+|---|---|
+| `match_score` | Weighted score from 0 to 100 |
+| `threshold_validation` | `PASS` when every required skill threshold is met; otherwise `FAIL` |
+| `matched_skills` | Required skills present in the student profile |
+| `missing_skills` | Required skills absent from the student profile |
+| `skill_results` | Per-skill verified score, required threshold, PASS/FAIL result, and reason |
+| `match_breakdown` | Individual component scores used in the weighted match score |
+| `explanation.decision` | `SHORTLISTED` or `NOT_SHORTLISTED` |
+| `explanation.summary` | Plain-English reason for the decision |
 
-This makes the matching result explainable to the Backend and the student.
+## 4. Error Responses
 
-## 8. Matched Skills
+| Situation | HTTP status | Response detail |
+|---|---:|---|
+| Unknown student | 404 | `Student profile not found` |
+| Unknown job | 404 | `Job not found` |
+| Invalid student-ranking dataset | 422 | `dataset must be either 'sample' or 'evaluation'` |
+| Explanation audit cannot be saved | 500 | `Unable to store explanation audit record` |
 
-The API identifies skills that are present in both the student profile and job requirements.
+## 5. Live Demonstration Examples
 
-## 9. Missing Skills
-
-The API identifies required job skills that are not present in the student profile.
-
-## 10. Error Response
-
-If the student does not exist:
-
-{
-  "detail": "Student profile not found"
-}
-
-HTTP status code:
-
-404 Not Found
-
-## 11. Backend Integration
-
-The Backend provides the student identifier and matching parameters.
-
-The matching service processes the student and job feature data and returns ranked jobs with:
-
-- Overall match score
-- Match breakdown
-- Matched skills
-- Missing skills
+- Student discovery: `EVAL_STU_004` ranks `EVAL_JOB_004` first with a 97.00% score and `SHORTLISTED` decision.
+- Company discovery: `EVAL_JOB_004` ranks `EVAL_STU_004` first with a 97.00% score and `SHORTLISTED` decision.
+- Negative threshold case: `EVAL_STU_003` is `NOT_SHORTLISTED` for `EVAL_JOB_001` because Python is below threshold and MongoDB is missing.
