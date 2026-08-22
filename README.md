@@ -56,6 +56,21 @@ Each result includes:
 - Plain-English summary
 - Timestamped audit record in `data/explanation_audit.jsonl`
 
+### Task 5 — Matching Validation
+
+Task 5 validates the matching and ranking system using held-out labelled data and live API testing.
+
+Validation covers:
+
+- Student-to-job ranking
+- Company candidate ranking
+- Required-skill threshold validation
+- Explainable ranking results
+- Shortlist and non-shortlist decisions
+- API failure handling
+- Edge-case handling
+- Explanation payload coverage
+
 ## Setup
 
 ### 1. Activate the virtual environment
