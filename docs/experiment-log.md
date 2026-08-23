@@ -134,3 +134,88 @@ The same 16 labelled student-job pairs were evaluated in both directions:
 
 ### Current v1 limitation
 This version ranks data loaded from JSON files. It is correct for the current small, real-shaped dataset, but it does not yet use a search index or have a measured large-scale search-latency benchmark.
+
+## Experiment 4 — Task 6 Match Quality Baseline
+
+### Goal
+
+Establish a measurable baseline for PlaceMux match quality before
+monetization-related changes affect matching behaviour.
+
+### Baseline Definition
+
+The baseline uses the existing PlaceMux rule-based matching and
+threshold-validation implementation.
+
+A student-job pair is considered a valid match when all required
+verified-skill thresholds are satisfied according to the existing
+matching decision logic.
+
+The baseline is evaluated on the held-out evaluation dataset.
+
+### Dataset
+
+- Dataset: Evaluation student/job dataset
+- Dataset version: Evaluation v1
+- Students: 4
+- Jobs: 4
+- Total labelled student-job pairs: 16
+- Positive pairs: 4
+- Negative pairs: 12
+- Evaluation type: Held-out evaluation
+
+### Quality Metrics
+
+The baseline is measured using:
+
+- Accuracy
+- Precision
+- Recall
+- False-positive rate
+- Explanation payload coverage
+
+### Results
+
+| Metric | Result |
+| --- | ---: |
+| Total labelled pairs | 16 |
+| True positives | 4 |
+| True negatives | 12 |
+| False positives | 0 |
+| False negatives | 0 |
+| Accuracy | 1.0000 |
+| Precision | 1.0000 |
+| Recall | 1.0000 |
+| False-positive rate | 0.0000 |
+| Explanation payload coverage | 1.0000 |
+
+### Ranking Results
+
+| Ranking direction | Precision | Recall | False-positive rate | Explanation coverage |
+| --- | ---: | ---: | ---: | ---: |
+| Job ranking for students | 1.0000 | 1.0000 | 0.0000 | 1.0000 |
+| Candidate ranking for companies | 1.0000 | 1.0000 | 0.0000 | 1.0000 |
+
+### Interpretation
+
+The current PlaceMux matching and ranking implementation correctly
+classified all 16 labelled student-job pairs in the evaluation dataset.
+
+The system produced zero false positives and zero false negatives.
+All evaluated ranking results included the required explanation payload.
+
+These results establish the pre-monetization match-quality baseline
+for the current evaluation dataset.
+
+### Limitations
+
+The evaluation contains 4 students, 4 jobs, and 16 labelled
+student-job pairs. The dataset is synthetic/real-shaped evaluation
+data and should not be interpreted as production-scale accuracy.
+
+A larger agreed real-world dataset would be required for stronger
+statistical validation.
+
+The current implementation loads ranking data directly from JSON
+files and does not provide a measured large-scale search-latency
+benchmark.
