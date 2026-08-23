@@ -71,6 +71,55 @@ Validation covers:
 - Edge-case handling
 - Explanation payload coverage
 
+### Task 6 — Match Quality Baseline
+
+Task 6 establishes a measurable baseline for PlaceMux match quality before further system or monetization-related changes.
+
+The baseline uses the existing rule-based matching and threshold-validation implementation.
+
+A student-job pair is considered a valid match when all required verified-skill thresholds are satisfied according to the existing matching decision logic.
+
+The baseline is evaluated using the held-out evaluation dataset.
+
+#### Baseline Dataset
+
+- Dataset: Evaluation student/job dataset
+- Dataset version: Evaluation v1
+- Students: 4
+- Jobs: 4
+- Total labelled student-job pairs: 16
+- Positive pairs: 4
+- Negative pairs: 12
+- Evaluation type: Held-out evaluation
+
+#### Match Quality Results
+
+| Metric | Result |
+|---|---:|
+| Total labelled pairs | 16 |
+| True positives | 4 |
+| True negatives | 12 |
+| False positives | 0 |
+| False negatives | 0 |
+| Accuracy | 1.0000 |
+| Precision | 1.0000 |
+| Recall | 1.0000 |
+| False-positive rate | 0.0000 |
+| Explanation payload coverage | 1.0000 |
+
+#### Ranking Results
+
+| Ranking direction | Precision | Recall | False-positive rate | Explanation coverage |
+|---|---:|---:|---:|---:|
+| Job ranking for students | 1.0000 | 1.0000 | 0.0000 | 1.0000 |
+| Candidate ranking for companies | 1.0000 | 1.0000 | 0.0000 | 1.0000 |
+
+These results establish the current pre-change match-quality baseline for the supplied evaluation dataset.
+
+The results should not be interpreted as production-scale accuracy because the evaluation dataset contains only 4 students, 4 jobs, and 16 labelled student-job pairs.
+
+---
+
 ## Setup
 
 ### 1. Activate the virtual environment
