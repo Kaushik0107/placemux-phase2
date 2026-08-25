@@ -120,7 +120,7 @@ The results should not be interpreted as production-scale accuracy because the e
 
 ---
 
-## Task 7/8 — Paid Application Flow
+## Task 7 — Paid Application Flow
 
 The project now includes a test-mode pay-per-application workflow.
 
@@ -145,6 +145,9 @@ The flow demonstrates:
   - `failure`
 
 This is a test/simulation implementation and does not process real payments.
+
+---
+
 
 ### Payment Gateway
 
@@ -220,6 +223,36 @@ Application status: NOT_CREATED
 No application audit record is created.
 This ensures that a failed payment cannot result in a submitted application.
 
+# Task 8 — Monetization Guardrails
+
+Task 8 adds a controlled pay-per-application flow to PlaceMux while preserving the existing matching, threshold validation, ranking, and explainability logic.
+
+The monetization flow uses the existing match decision to evaluate whether a student's application spend is likely to be high quality.
+
+## Task 8 Flow
+
+Student + Job
+      ↓
+Existing Matching System
+      ↓
+Match Score + Shortlist Decision
+      ↓
+Spend-Quality Guardrail
+      ↓
+ALLOW / WARN
+      ↓
+Test Payment Gateway
+      ↓
+Payment Audit
+      ↓
+Application
+      ↓
+Receipt
+      ↓
+Refund (when requested)
+      ↓
+Payment/Application Reconciliation
+
 ## API Endpoints
 
 Student Job Ranking
@@ -250,167 +283,6 @@ Example failed payment:
 Invalid payment outcomes are rejected with HTTP 422.
 Unknown students and jobs are rejected with HTTP 404.
 
-## API Demonstration
-The API can be started with:
-uvicorn api.main:app --reload
-
-Swagger documentation:
-http://127.0.0.1:8000/docs
-
-The Swagger interface can be used to demonstrate:
-- Student job matching
-- Candidate ranking
-- Successful paid application
-- Failed paid application
-- Invalid payment outcome
-- Unknown student/job handling
-Successful Payment Demonstration
-Use the following test data:
-Student ID: EVAL_STU_004
-Job ID: EVAL_JOB_004
-Payment outcome: success
-Expected result:
-HTTP 200
-
-application_status: SUBMITTED
-payment.status: SUCCESS
-amount: 100
-currency: INR
-application_id: APP_...
-The successful transaction is written to:
-data/payment_audit.jsonl
-The application is written to:
-data/application_audit.jsonl
-Failed Payment Demonstration
-Use the following test data:
-Student ID: EVAL_STU_004
-Job ID: EVAL_JOB_004
-Payment outcome: failure
-Expected result:
-HTTP 200
-
-application_status: NOT_CREATED
-payment.status: FAILED
-amount: 100
-currency: INR
-The failed transaction is written to:
-data/payment_audit.jsonl
-No corresponding application is created in:
-data/application_audit.jsonl
-Automated Tests
-The project includes payment-flow tests in:
-tests/test_payment_flow.py
-The tests verify:
-- Successful payment creates an application.
-- Successful payment stores the correct payment amount.
-- Successful payment uses INR currency.
-- Application is linked to the payment transaction.
-- Failed payment does not create an application.
-- Failed payment is still recorded in the payment audit.
-- Unknown students are rejected.
-- Unknown jobs are rejected.
-Current test result:
-23 passed
-Command:
-pytest -q
-
-## Evaluation
-Run threshold validation evaluation:
-python .\evaluation\evaluate_thresholds.py
-
-Run explainability evaluation:
-python .\evaluation\evaluate_explainability.py
-
-Run Task 3 job and candidate ranking evaluation:
-python .\evaluation\evaluate_ranking.py
-
-Run all automated tests:
-pytest -q
-
-Held-out evaluation dataset:
-- 4 students
-- 4 jobs
-- 16 labelled student-job pairs
-
-Current held-out results for both job ranking and candidate ranking:
-Metric	Result
-Precision	1.0000
-Recall	1.0000
-False-positive rate	0.0000
-Explanation payload coverage	1.0000
-
-
-These results apply to the supplied held-out, real-shaped dataset. They are not a production-scale performance claim.
-
-## Project Structure
-api/
-    FastAPI endpoints
-
-data/
-    Sample data
-    Held-out evaluation data
-    Explanation audit records
-    Payment audit records
-    Application audit records
-
-docs/
-    API contract
-    Experiment log
-    Demo notes
-
-evaluation/
-    Evaluation scripts
-
-matching/
-    Matching
-    Threshold validation
-    Explanation
-    Persistence logic
-
-payments/
-    Test payment gateway
-    Paid application service
-
-search/
-    Job ranking
-    Candidate ranking
-    Explanations
-
-tests/
-    Automated tests
-    Payment-flow tests
-
-## Current Validation Status
-The current implementation has been validated with:
-pytest -q
-
-23 passed in 0.41s
-The payment-flow tests confirm the core business rule:
-SUCCESS payment
-        ↓
-Application created
-        ↓
-SUBMITTED
-and:
-FAILED payment
-        ↓
-Application NOT created
-        ↓
-NOT_CREATED
-The payment and application audit records also confirm the separation between successful and failed transactions.
-
-## Current v1 Limitations
-- The payment gateway is a test/simulation gateway and does not process real payments.
-- Payment and application records currently use JSONL audit files.
-- Ranking currently loads JSON data directly.
-- The current implementation is appropriate for the small evaluation dataset.
-- A production deployment should use a persistent database for payment/application state.
-- A production deployment should integrate a real payment provider.
-- A production deployment should use a search index/vector store for large-scale discovery.
-- A production deployment should include measured large-scale latency benchmarks.
-- Authentication and authorization are not implemented in the current test implementation.
-- Payment idempotency and webhook verification would be required for a production payment system.
-
 ## Setup
 1. Activate the virtual environment
 .\venv\Scripts\Activate.ps1
@@ -423,20 +295,3 @@ uvicorn api.main:app --reload
 5. Open Swagger API documentation
 http://127.0.0.1:8000/docs
 
-## Current Project Status
-Completed functionality currently includes:
-- Student ↔ Job matching
-- Skill threshold validation
-- Job ranking
-- Candidate ranking
-- Explainable matching
-- Held-out evaluation
-- Match-quality baseline
-- FastAPI endpoints
-- Test payment gateway
-- Pay-per-application service
-- Successful payment flow
-- Failed payment flow
-- Payment audit records
-- Application audit records
-- Automated payment-flow tests

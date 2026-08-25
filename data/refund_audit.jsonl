@@ -1,0 +1,1 @@
+{"refund_id": "REF_E391706D93D3", "transaction_id": "TEST_TXN_41A3F1D72314", "student_id": "EVAL_STU_004", "job_id": "EVAL_JOB_004", "amount": 100, "currency": "INR", "status": "REFUNDED", "reason": "Application refund requested", "refunded_at": "2026-08-25T13:16:02.956019+00:00"}
