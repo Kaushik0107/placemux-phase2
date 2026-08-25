@@ -223,7 +223,7 @@ Application status: NOT_CREATED
 No application audit record is created.
 This ensures that a failed payment cannot result in a submitted application.
 
-# Task 8 — Monetization Guardrails
+# Task 8 — Receipts, Refunds & Reconciliation
 
 Task 8 adds a controlled pay-per-application flow to PlaceMux while preserving the existing matching, threshold validation, ranking, and explainability logic.
 
