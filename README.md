@@ -120,113 +120,323 @@ The results should not be interpreted as production-scale accuracy because the e
 
 ---
 
-## Setup
+## Task 7/8 — Paid Application Flow
 
-### 1. Activate the virtual environment
+The project now includes a test-mode pay-per-application workflow.
 
-```powershell
-.\venv\Scripts\Activate.ps1
-```
+The flow demonstrates:
 
-### 2. Install dependencies
+1. Student selects a job.
+2. The student's profile and job are validated.
+3. The existing matching decision is generated.
+4. A test payment is created through a simulated payment gateway.
+5. The payment transaction is written to an audit file.
+6. An application is created only when payment succeeds.
+7. A failed payment does not create an application.
+8. Application details are written to a separate audit file.
 
-```powershell
-python -m pip install -r requirements.txt
-```
+### Application Fee
 
-### 3. Run automated tests
+- Application fee: `₹100`
+- Currency: `INR`
+- Gateway: `TEST_GATEWAY`
+- Payment modes supported:
+  - `success`
+  - `failure`
 
-```powershell
-pytest
-```
+This is a test/simulation implementation and does not process real payments.
 
-### 4. Start the API
+### Payment Gateway
 
-```powershell
-uvicorn api.main:app --reload
-```
+The simulated gateway is implemented in:
 
-### 5. Open Swagger API documentation
+## payments/gateway.py
+It generates:
+- Test transaction ID
+- Payment amount
+- Payment status
+- Gateway name
+- UTC timestamp
+- Payment reason
 
-```text
-http://127.0.0.1:8000/docs
-```
+Successful test payments return:
+status = SUCCESS
+
+Failed test payments return:
+status = FAILED
+
+## Application Service
+The pay-per-application business logic is implemented in:
+payments/service.py
+
+The service:
+- Validates the student.
+- Validates the job.
+- Generates the existing matching decision.
+- Processes the test payment.
+- Stores payment audit information.
+- Creates an application only after successful payment.
+- Stores application audit information.
+- Returns the application/payment status.
+
+## Payment Audit
+Payment transactions are recorded in:
+data/payment_audit.jsonl
+Each payment audit record contains:
+- Transaction ID
+- Student ID
+- Job ID
+- Amount
+- Currency
+- Payment status
+- Gateway
+- Timestamp
+- Reason
+
+## Application Audit
+Successful applications are recorded in:
+data/application_audit.jsonl
+Each application audit record contains:
+- Application ID
+- Student ID
+- Job ID
+- Payment transaction ID
+- Amount
+- Currency
+- Application status
+- Submission timestamp
+
+Successful Payment Behaviour
+For a successful payment:
+Payment status: SUCCESS
+Application status: SUBMITTED
+Application ID: APP_...
+The application is created and linked to the successful payment transaction.
+
+Failed Payment Behaviour
+For a failed payment:
+Payment status: FAILED
+Application status: NOT_CREATED
+No application audit record is created.
+This ensures that a failed payment cannot result in a submitted application.
 
 ## API Endpoints
 
-### Student job ranking
-
-```text
+Student Job Ranking
 POST /api/v1/matching/jobs
-```
 
 Example:
-
-```text
 /api/v1/matching/jobs?student_id=EVAL_STU_004&top_k=1&dataset=evaluation
-```
 
-### Company candidate ranking
-
-```text
+Company Candidate Ranking
 POST /api/v1/ranking/candidates
-```
 
 Example:
-
-```text
 /api/v1/ranking/candidates?job_id=EVAL_JOB_004&top_k=2
-```
+
+## Paid Application
+POST /api/v1/applications/apply
+Parameters:
+student_id
+job_id
+payment_outcome
+Supported payment outcomes:
+success
+failure
+Example successful payment:
+/api/v1/applications/apply?student_id=EVAL_STU_004&job_id=EVAL_JOB_004&payment_outcome=success
+Example failed payment:
+/api/v1/applications/apply?student_id=EVAL_STU_004&job_id=EVAL_JOB_004&payment_outcome=failure
+Invalid payment outcomes are rejected with HTTP 422.
+Unknown students and jobs are rejected with HTTP 404.
+
+## API Demonstration
+The API can be started with:
+uvicorn api.main:app --reload
+
+Swagger documentation:
+http://127.0.0.1:8000/docs
+
+The Swagger interface can be used to demonstrate:
+- Student job matching
+- Candidate ranking
+- Successful paid application
+- Failed paid application
+- Invalid payment outcome
+- Unknown student/job handling
+Successful Payment Demonstration
+Use the following test data:
+Student ID: EVAL_STU_004
+Job ID: EVAL_JOB_004
+Payment outcome: success
+Expected result:
+HTTP 200
+
+application_status: SUBMITTED
+payment.status: SUCCESS
+amount: 100
+currency: INR
+application_id: APP_...
+The successful transaction is written to:
+data/payment_audit.jsonl
+The application is written to:
+data/application_audit.jsonl
+Failed Payment Demonstration
+Use the following test data:
+Student ID: EVAL_STU_004
+Job ID: EVAL_JOB_004
+Payment outcome: failure
+Expected result:
+HTTP 200
+
+application_status: NOT_CREATED
+payment.status: FAILED
+amount: 100
+currency: INR
+The failed transaction is written to:
+data/payment_audit.jsonl
+No corresponding application is created in:
+data/application_audit.jsonl
+Automated Tests
+The project includes payment-flow tests in:
+tests/test_payment_flow.py
+The tests verify:
+- Successful payment creates an application.
+- Successful payment stores the correct payment amount.
+- Successful payment uses INR currency.
+- Application is linked to the payment transaction.
+- Failed payment does not create an application.
+- Failed payment is still recorded in the payment audit.
+- Unknown students are rejected.
+- Unknown jobs are rejected.
+Current test result:
+23 passed
+Command:
+pytest -q
 
 ## Evaluation
-
 Run threshold validation evaluation:
-
-```powershell
 python .\evaluation\evaluate_thresholds.py
-```
 
 Run explainability evaluation:
-
-```powershell
 python .\evaluation\evaluate_explainability.py
-```
 
 Run Task 3 job and candidate ranking evaluation:
-
-```powershell
 python .\evaluation\evaluate_ranking.py
-```
+
+Run all automated tests:
+pytest -q
 
 Held-out evaluation dataset:
-
 - 4 students
 - 4 jobs
 - 16 labelled student-job pairs
 
 Current held-out results for both job ranking and candidate ranking:
+Metric	Result
+Precision	1.0000
+Recall	1.0000
+False-positive rate	0.0000
+Explanation payload coverage	1.0000
 
-| Metric | Result |
-|---|---:|
-| Precision | 1.0000 |
-| Recall | 1.0000 |
-| False-positive rate | 0.0000 |
-| Explanation payload coverage | 1.0000 |
 
 These results apply to the supplied held-out, real-shaped dataset. They are not a production-scale performance claim.
 
 ## Project Structure
+api/
+    FastAPI endpoints
 
-```text
-api/          FastAPI endpoints
-data/         Sample data, held-out evaluation data, and audit records
-docs/         API contract, experiment log, and demo notes
-evaluation/   Evaluation scripts
-matching/     Matching, threshold validation, and persistence logic
-search/       Job ranking, candidate ranking, and explanations
-tests/        Automated tests
-```
+data/
+    Sample data
+    Held-out evaluation data
+    Explanation audit records
+    Payment audit records
+    Application audit records
 
-## Current v1 Limitation
+docs/
+    API contract
+    Experiment log
+    Demo notes
 
-Ranking currently loads JSON data directly. It is appropriate for the small evaluation dataset, but a production deployment should use a search index/vector store and include a measured large-scale latency benchmark.
+evaluation/
+    Evaluation scripts
+
+matching/
+    Matching
+    Threshold validation
+    Explanation
+    Persistence logic
+
+payments/
+    Test payment gateway
+    Paid application service
+
+search/
+    Job ranking
+    Candidate ranking
+    Explanations
+
+tests/
+    Automated tests
+    Payment-flow tests
+
+## Current Validation Status
+The current implementation has been validated with:
+pytest -q
+
+23 passed in 0.41s
+The payment-flow tests confirm the core business rule:
+SUCCESS payment
+        ↓
+Application created
+        ↓
+SUBMITTED
+and:
+FAILED payment
+        ↓
+Application NOT created
+        ↓
+NOT_CREATED
+The payment and application audit records also confirm the separation between successful and failed transactions.
+
+## Current v1 Limitations
+- The payment gateway is a test/simulation gateway and does not process real payments.
+- Payment and application records currently use JSONL audit files.
+- Ranking currently loads JSON data directly.
+- The current implementation is appropriate for the small evaluation dataset.
+- A production deployment should use a persistent database for payment/application state.
+- A production deployment should integrate a real payment provider.
+- A production deployment should use a search index/vector store for large-scale discovery.
+- A production deployment should include measured large-scale latency benchmarks.
+- Authentication and authorization are not implemented in the current test implementation.
+- Payment idempotency and webhook verification would be required for a production payment system.
+
+## Setup
+1. Activate the virtual environment
+.\venv\Scripts\Activate.ps1
+2. Install dependencies
+python -m pip install -r requirements.txt
+3. Run automated tests
+pytest -q
+4. Start the API
+uvicorn api.main:app --reload
+5. Open Swagger API documentation
+http://127.0.0.1:8000/docs
+
+## Current Project Status
+Completed functionality currently includes:
+- Student ↔ Job matching
+- Skill threshold validation
+- Job ranking
+- Candidate ranking
+- Explainable matching
+- Held-out evaluation
+- Match-quality baseline
+- FastAPI endpoints
+- Test payment gateway
+- Pay-per-application service
+- Successful payment flow
+- Failed payment flow
+- Payment audit records
+- Application audit records
+- Automated payment-flow tests

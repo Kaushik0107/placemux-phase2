@@ -52,8 +52,10 @@ def rank_jobs_for_student(student_id, top_k=10):
         )
 
     ranked_jobs.sort(
-        key=lambda item: item["match_score"],
-        reverse=True,
-    )
-
+    key=lambda item: (
+        item["threshold_validation"] == "PASS",
+        item["match_score"],
+    ),
+    reverse=True,
+)
     return ranked_jobs[:top_k]

@@ -3,6 +3,7 @@ from fastapi import FastAPI, HTTPException
 from matching.explanation_store import persist_explanation
 from matching.feature_matching import match_student_to_jobs
 from search.candidate_ranking import rank_candidates_for_job
+from payments.service import process_paid_application
 
 app = FastAPI(
     title="PlaceMux Matching API",
@@ -87,4 +88,52 @@ def get_ranked_candidates(
         raise HTTPException(
             status_code=500,
             detail="Unable to store explanation audit record",
+        )
+
+@app.post("/api/v1/applications/apply")
+def submit_paid_application(
+    student_id: str,
+    job_id: str,
+    payment_outcome: str = "success",
+):
+    if payment_outcome not in {"success", "failure"}:
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                "payment_outcome must be either "
+                "'success' or 'failure'"
+            ),
+        )
+
+    try:
+        return process_paid_application(
+            student_id=student_id,
+            job_id=job_id,
+            payment_outcome=payment_outcome,
+        )
+
+    except ValueError as exc:
+        message = str(exc)
+
+        if message == "Student profile not found":
+            raise HTTPException(
+                status_code=404,
+                detail=message,
+            )
+
+        if message == "Job not found":
+            raise HTTPException(
+                status_code=404,
+                detail=message,
+            )
+
+        raise HTTPException(
+            status_code=400,
+            detail=message,
+        )
+
+    except OSError:
+        raise HTTPException(
+            status_code=500,
+            detail="Unable to store payment/application audit record",
         )
