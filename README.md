@@ -253,6 +253,24 @@ Refund (when requested)
       ↓
 Payment/Application Reconciliation
 
+## Task 9 — Failure Handling & Resilience
+
+Verified that the paywall does not degrade PlaceMux matching relevance and
+that payment failures are handled safely and observably.
+
+- Held-out pairs: 16
+- Shortlisted: 4
+- Not shortlisted: 12
+- Precision: 1.0000
+- Recall: 1.0000
+- False-positive rate: 0.0000
+- Explanation coverage: 1.0000
+- Payment failure verified: no application created
+- Payment reconciliation verified
+- Automated tests: 30 passed
+
+**Result:** No relevance regression detected after the payment/paywall changes.
+
 ## API Endpoints
 
 Student Job Ranking
@@ -267,8 +285,9 @@ POST /api/v1/ranking/candidates
 Example:
 /api/v1/ranking/candidates?job_id=EVAL_JOB_004&top_k=2
 
-## Paid Application
+Paid Application
 POST /api/v1/applications/apply
+
 Parameters:
 student_id
 job_id
@@ -276,10 +295,13 @@ payment_outcome
 Supported payment outcomes:
 success
 failure
+
 Example successful payment:
 /api/v1/applications/apply?student_id=EVAL_STU_004&job_id=EVAL_JOB_004&payment_outcome=success
+
 Example failed payment:
 /api/v1/applications/apply?student_id=EVAL_STU_004&job_id=EVAL_JOB_004&payment_outcome=failure
+
 Invalid payment outcomes are rejected with HTTP 422.
 Unknown students and jobs are rejected with HTTP 404.
 
@@ -294,4 +316,3 @@ pytest -q
 uvicorn api.main:app --reload
 5. Open Swagger API documentation
 http://127.0.0.1:8000/docs
-
