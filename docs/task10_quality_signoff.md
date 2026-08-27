@@ -59,10 +59,10 @@ does not degrade the existing matching quality on held-out data.
 
 | Metric | Value |
 |---|---:|
-| Payment attempts | 77 |
-| Successful payments | 55 |
-| Failed payments | 22 |
-| Successful revenue | 5500 INR |
+| Payment attempts | 81 |
+| Successful payments | 58 |
+| Failed payments | 23 |
+| Successful revenue | 5800 INR |
 | Average successful transaction value | 100.0 INR |
 
 ## Monetization Verification
