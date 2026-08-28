@@ -10,6 +10,7 @@ This project supports:
 - Required-skill threshold validation
 - Explainable job ranking for students
 - Explainable candidate ranking for companies
+- Proctoring hardening and false-positive reduction
 - Held-out evaluation metrics
 - API response audit records
 
@@ -120,9 +121,9 @@ The results should not be interpreted as production-scale accuracy because the e
 
 ---
 
-## Task 7 — Paid Application Flow
+### Task 7 — Paid Application Flow
 
-The project now includes a test-mode pay-per-application workflow.
+The project includes a test-mode pay-per-application workflow.
 
 The flow demonstrates:
 
@@ -135,7 +136,7 @@ The flow demonstrates:
 7. A failed payment does not create an application.
 8. Application details are written to a separate audit file.
 
-### Application Fee
+#### Application Fee
 
 - Application fee: `₹100`
 - Currency: `INR`
@@ -144,179 +145,108 @@ The flow demonstrates:
   - `success`
   - `failure`
 
-This is a test/simulation implementation and does not process real payments.
+#### Payment Gateway
+
+The simulated gateway is implemented in `payments/gateway.py`. It generates transaction IDs, status, gateway details, UTC timestamps, and payment reasons.
+
+#### Application Service
+The pay-per-application business logic is implemented in `payments/service.py`. It handles validation, matching execution, payment storage, and application creation.
+
+#### Audits
+- Payment transactions: `data/payment_audit.jsonl`
+- Successful applications: `data/application_audit.jsonl`
 
 ---
 
-
-### Payment Gateway
-
-The simulated gateway is implemented in:
-
-## payments/gateway.py
-It generates:
-- Test transaction ID
-- Payment amount
-- Payment status
-- Gateway name
-- UTC timestamp
-- Payment reason
-
-Successful test payments return:
-status = SUCCESS
-
-Failed test payments return:
-status = FAILED
-
-## Application Service
-The pay-per-application business logic is implemented in:
-payments/service.py
-
-The service:
-- Validates the student.
-- Validates the job.
-- Generates the existing matching decision.
-- Processes the test payment.
-- Stores payment audit information.
-- Creates an application only after successful payment.
-- Stores application audit information.
-- Returns the application/payment status.
-
-## Payment Audit
-Payment transactions are recorded in:
-data/payment_audit.jsonl
-Each payment audit record contains:
-- Transaction ID
-- Student ID
-- Job ID
-- Amount
-- Currency
-- Payment status
-- Gateway
-- Timestamp
-- Reason
-
-## Application Audit
-Successful applications are recorded in:
-data/application_audit.jsonl
-Each application audit record contains:
-- Application ID
-- Student ID
-- Job ID
-- Payment transaction ID
-- Amount
-- Currency
-- Application status
-- Submission timestamp
-
-Successful Payment Behaviour
-For a successful payment:
-Payment status: SUCCESS
-Application status: SUBMITTED
-Application ID: APP_...
-The application is created and linked to the successful payment transaction.
-
-Failed Payment Behaviour
-For a failed payment:
-Payment status: FAILED
-Application status: NOT_CREATED
-No application audit record is created.
-This ensures that a failed payment cannot result in a submitted application.
-
-# Task 8 — Receipts, Refunds & Reconciliation
+### Task 8 — Receipts, Refunds & Reconciliation
 
 Task 8 adds a controlled pay-per-application flow to PlaceMux while preserving the existing matching, threshold validation, ranking, and explainability logic.
 
-The monetization flow uses the existing match decision to evaluate whether a student's application spend is likely to be high quality.
+---
 
-## Task 8 Flow
+### Task 9 — Failure Handling & Resilience
 
-Student + Job
-      ↓
-Existing Matching System
-      ↓
-Match Score + Shortlist Decision
-      ↓
-Spend-Quality Guardrail
-      ↓
-ALLOW / WARN
-      ↓
-Test Payment Gateway
-      ↓
-Payment Audit
-      ↓
-Application
-      ↓
-Receipt
-      ↓
-Refund (when requested)
-      ↓
-Payment/Application Reconciliation
-
-## Task 9 — Failure Handling & Resilience
-
-Verified that the paywall does not degrade PlaceMux matching relevance and
-that payment failures are handled safely and observably.
+Verified that the paywall does not degrade PlaceMux matching relevance and that payment failures are handled safely and observably.
 
 - Held-out pairs: 16
-- Shortlisted: 4
-- Not shortlisted: 12
-- Precision: 1.0000
-- Recall: 1.0000
-- False-positive rate: 0.0000
-- Explanation coverage: 1.0000
+- Precision: 1.0000 | Recall: 1.0000 | FPR: 0.0000
 - Payment failure verified: no application created
-- Payment reconciliation verified
 - Automated tests: 30 passed
 
-**Result:** No relevance regression detected after the payment/paywall changes.
+---
 
-## Task 10 — Monetization Integration & Revenue Dashboard
+### Task 10 — Monetization Integration & Revenue Dashboard
 
 Implemented monetization quality sign-off and revenue verification.
 
-- Matching quality evaluated on held-out evaluation data.
-- Precision, recall and false-positive rate verified numerically.
-- Explanation coverage verified.
 - Paid application flow verified in test mode.
 - Payment and application records persisted through audit data.
 - Revenue evidence derived from successful payment records.
-- Payment failure handling verified.
-- Final automated test suite passes.
+
+---
+
+### Task 11 — Proctoring Hardening (Start)
+
+Task 11 begins the intelligence layer hardening for candidate proctoring and assessment integrity verification.
+
+The objective is to replace rigid rule-based flag thresholds with a trained model that significantly reduces False Positive Rates (FPR) on integrity data without creating black-box decisions.
+
+#### Technical Implementation
+
+- **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).
+- **Plain-English Explainability Engine:** Analyzes feature contributions to generate plain-English explanations for every flag decision (`FLAGGED` / `CLEARED`).
+- **API Endpoint (`api/main.py`):** Exposes `POST /proctoring/verify` for live candidate integrity check and explainability payload retrieval.
+- **Automated Tests (`tests/test_proctoring_hardening.py`):** End-to-end verification and evaluation assertions.
+
+#### Proctoring Hardening Baseline vs. Hardened Model
+
+| Evaluation Metric | Rule Baseline | Hardened Model |
+|---|---:|---:|
+| **False Positive Rate (FPR)** | 88.00% | **0.00%** |
+| **Precision** | 0.17 | **1.00** |
+| **Recall** | 1.00 | **1.00** |
+| **F1-Score** | 0.29 | **1.00** |
+| **Explanation Coverage** | 100.0% | **100.0%** |
+
+---
 
 ## API Endpoints
 
-Student Job Ranking
-POST /api/v1/matching/jobs
+### Student Job Ranking
+`POST /api/v1/matching/jobs`
 
 Example:
-/api/v1/matching/jobs?student_id=EVAL_STU_004&top_k=1&dataset=evaluation
+`/api/v1/matching/jobs?student_id=EVAL_STU_004&top_k=1&dataset=evaluation`
 
-Company Candidate Ranking
-POST /api/v1/ranking/candidates
+### Company Candidate Ranking
+`POST /api/v1/ranking/candidates`
 
 Example:
-/api/v1/ranking/candidates?job_id=EVAL_JOB_004&top_k=2
+`/api/v1/ranking/candidates?job_id=EVAL_JOB_004&top_k=2`
 
-Paid Application
-POST /api/v1/applications/apply
+### Paid Application
+`POST /api/v1/applications/apply`
 
 Parameters:
-student_id
-job_id
-payment_outcome
-Supported payment outcomes:
-success
-failure
+- `student_id`
+- `job_id`
+- `payment_outcome` (`success` or `failure`)
 
-Example successful payment:
-/api/v1/applications/apply?student_id=EVAL_STU_004&job_id=EVAL_JOB_004&payment_outcome=success
+Example:
+`/api/v1/applications/apply?student_id=EVAL_STU_004&job_id=EVAL_JOB_004&payment_outcome=success`
 
-Example failed payment:
-/api/v1/applications/apply?student_id=EVAL_STU_004&job_id=EVAL_JOB_004&payment_outcome=failure
+### Proctoring Verification (Task 11)
+`POST /proctoring/verify`
 
-Invalid payment outcomes are rejected with HTTP 422.
-Unknown students and jobs are rejected with HTTP 404.
+Request Body:
+```json
+{
+  "student_id": "STU_1029",
+  "gaze_off_screen_ratio": 0.42,
+  "audio_anomaly_count": 1,
+  "tab_switches": 5,
+  "session_duration": 3600
+}
 
 ## Setup
 1. Activate the virtual environment

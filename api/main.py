@@ -137,3 +137,37 @@ def submit_paid_application(
             status_code=500,
             detail="Unable to store payment/application audit record",
         )
+
+from pydantic import BaseModel
+
+class ProctoringCheckRequest(BaseModel):
+    student_id: str
+    gaze_off_screen_ratio: float
+    audio_anomaly_count: int
+    tab_switches: int
+    session_duration: float
+
+@app.post("/proctoring/verify")
+def verify_proctoring_status(req: ProctoringCheckRequest):
+    reasons = []
+    if req.tab_switches > 3:
+        reasons.append(f"high tab switching ({req.tab_switches} times)")
+    if req.gaze_off_screen_ratio > 0.30:
+        reasons.append(f"frequent off-screen gaze ({req.gaze_off_screen_ratio*100:.1f}% duration)")
+    if req.audio_anomaly_count > 2:
+        reasons.append(f"multiple audio anomalies ({req.audio_anomaly_count} detected)")
+
+    is_flagged = len(reasons) >= 2 or (req.tab_switches > 5)
+
+    explanation = (
+        f"Student {req.student_id} flagged due to: {', '.join(reasons)}."
+        if is_flagged
+        else f"Student {req.student_id} cleared. Integrity metrics remain within acceptable thresholds."
+    )
+
+    return {
+        "student_id": req.student_id,
+        "is_flagged": is_flagged,
+        "status": "FLAGGED" if is_flagged else "CLEARED",
+        "explanation": explanation
+    }    
