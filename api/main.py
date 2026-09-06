@@ -214,3 +214,20 @@ def verify_offer(req: OfferVerifyRequest):
         "status": "VERIFIED_AUTHENTIC" if is_authentic else "TAMPER_DETECTED",
         "explanation": "SHA-256 digital signature matches payload." if is_authentic else "Payload hash mismatch! Document has been modified."
     }
+
+from pydantic import BaseModel
+from matching.verification_scheduling import schedule_interview
+
+class InterviewScheduleRequest(BaseModel):
+    student_id: str
+    job_id: str
+    slot: str
+
+@app.post("/interviews/schedule")
+def schedule_interview_endpoint(req: InterviewScheduleRequest):
+    result = schedule_interview(req.student_id, req.job_id, req.slot)
+    return {
+        "status": "SUCCESS",
+        "data": result,
+        "explanation": f"Interview confirmed for {req.student_id} on slot {req.slot}."
+    }

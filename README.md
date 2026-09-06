@@ -202,6 +202,15 @@ Task 12 delivers initial parsing capabilities for resumes/JDs and cryptographic 
   - `POST /offers/issue`: Issue an offer document with a cryptographic hash[cite: 3].
   - `POST /offers/verify`: Verify if an offer payload has been tampered with[cite: 3].
 
+### Task 13 — Verification & Interview Scheduling
+
+Task 13 delivers proctoring false-positive reduction and interview slot scheduling for verified candidates.
+
+- **FP Reduction Model (`matching/verification_scheduling.py`):** Trains an ensemble model on flagged-session data to filter out false proctoring flags.
+- **Interview Scheduling Engine:** Confirms interview slots for verified candidates[cite: 4].
+- **API Endpoint:**
+  - `POST /interviews/schedule`: Schedules an interview slot for a student and job pair[cite: 4].
+  
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).
