@@ -280,3 +280,34 @@ def execute_trust_signoff(req: TrustSignoffRequest):
         "status": "SUCCESS",
         "data": result
     }
+
+from typing import List
+from pydantic import BaseModel
+from matching.item_bank_onboarding import bulk_onboard_students, analyze_item_bank_quality
+
+class StudentProfile(BaseModel):
+    student_id: str
+    skills: List[str]
+
+class ItemAnalytic(BaseModel):
+    item_id: str
+    discrimination_index: float
+    error_rate: float
+
+@app.post("/onboarding/bulk")
+def bulk_onboard_endpoint(students: List[StudentProfile]):
+    students_data = [s.dict() for s in students]
+    result = bulk_onboard_students(students_data)
+    return {
+        "status": "SUCCESS",
+        "data": result
+    }
+
+@app.post("/items/quality-check")
+def item_quality_check_endpoint(items: List[ItemAnalytic]):
+    items_data = [item.dict() for item in items]
+    result = analyze_item_bank_quality(items_data)
+    return {
+        "status": "SUCCESS",
+        "data": result
+    }

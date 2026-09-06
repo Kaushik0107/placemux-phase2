@@ -246,3 +246,9 @@ benchmark.
 - Pipeline Integration: Unified ontology parsing, proctoring FP reduction, and cryptographic offer verification (`matching/trust_signoff.py`).
 - Verification Result: Verified end-to-end dry run execution with tamper-evident hashing and plain-English explanations.
 - Endpoints Added: POST /trust/signoff.
+
+## Task 19: Bulk Onboarding & Recruiter Views (Item-Bank Quality)
+*Note: Tasks 16, 17, and 18 were not assigned/received via mail or dashboard; work transitioned directly from Task 15 to Task 19.*
+- Item-Bank Quality: Analyzed discrimination indices and error rates to identify weak assessment items (`matching/item_bank_onboarding.py`).
+- Bulk Onboarding: Enabled batch onboarding processing for student records.
+- Endpoints Added: POST /onboarding/bulk, POST /items/quality-check.

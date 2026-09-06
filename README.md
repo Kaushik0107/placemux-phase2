@@ -232,6 +232,18 @@ Task 15 delivers the final end-to-end dry run sign-off across the entire PlaceMu
 - **API Endpoint:**
   - `POST /trust/signoff`: Executes full end-to-end AI trust dry run[cite: 6].  
 
+### Task 19 — Bulk Onboarding & Recruiter Views
+
+*(Note: Tasks 16, 17, and 18 were not received via email or dashboard; development jumped directly from Task 15 to Task 19.)*
+
+Task 19 delivers bulk student onboarding processing and item-bank quality support for admins and recruiters.
+
+- **Item-Bank Quality Engine (`matching/item_bank_onboarding.py`):** Flags weak assessment items using discrimination index thresholds and extreme error rate analysis[cite: 7].
+- **Bulk Onboarding Processor:** Handles bulk profile creation and skill ingestion[cite: 7].
+- **API Endpoints:**
+  - `POST /onboarding/bulk`: Process bulk student onboarding records[cite: 7].
+  - `POST /items/quality-check`: Analyze item-bank analytics and retrieve weak-item flags[cite: 7].
+  
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).
