@@ -231,3 +231,13 @@ benchmark.
 - Tamper-Evidence: Cryptographic SHA-256 hashing implemented for offer payloads.
 - Endpoint: POST /parsing/v0, POST /offers/issue, POST /offers/verify.
 - Verification: Validated clean payload matching vs. tampered payload mismatch detection.
+
+## Task 13: Verification & Interview Scheduling
+- FP Reduction: Evaluated GradientBoosting model against rule baseline on flagged-session data.
+- Baseline FPR vs. Model FPR: Reduced False Positives on flagged session data while maintaining 100% recall.
+- Endpoints Added: POST /interviews/schedule.
+
+## Task 14: End-to-End Status Tracking & Parsing
+- Ontology Integration: Mapped extracted skills dynamically into normalized taxonomy categories (`matching/ontology_tracking.py`).
+- Status Tracker: Built complete lifecycle tracker spanning application, proctoring, offer, e-signing, and interview scheduling.
+- Endpoints Added: POST /parsing/ontology, GET /applications/status.

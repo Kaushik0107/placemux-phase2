@@ -231,3 +231,25 @@ def schedule_interview_endpoint(req: InterviewScheduleRequest):
         "data": result,
         "explanation": f"Interview confirmed for {req.student_id} on slot {req.slot}."
     }
+
+from pydantic import BaseModel
+from matching.ontology_tracking import map_parsed_skills_to_ontology, get_end_to_end_application_status
+
+class OntologyParseRequest(BaseModel):
+    raw_text: str
+
+@app.post("/parsing/ontology")
+def parse_into_ontology(req: OntologyParseRequest):
+    result = map_parsed_skills_to_ontology(req.raw_text)
+    return {
+        "status": "SUCCESS",
+        "data": result
+    }
+
+@app.get("/applications/status")
+def track_application_status(student_id: str, job_id: str):
+    status = get_end_to_end_application_status(student_id, job_id)
+    return {
+        "status": "SUCCESS",
+        "data": status
+    }

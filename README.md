@@ -197,6 +197,7 @@ Task 12 delivers initial parsing capabilities for resumes/JDs and cryptographic 
 
 - **Parsing v0 (`matching/parsing_esign.py`):** Extracts structured skills mapped to the skills ontology and calculates experience duration from unstructured text[cite: 3].
 - **Tamper-Evident Offers:** Generates SHA-256 hashes for canonical offer JSON payloads[cite: 3]. Any post-signing modification to the offer invalidates the document hash[cite: 3].
+
 - **API Endpoints:**
   - `POST /parsing/v0`: Parse raw resume/JD text into structured features[cite: 3].
   - `POST /offers/issue`: Issue an offer document with a cryptographic hash[cite: 3].
@@ -208,9 +209,21 @@ Task 13 delivers proctoring false-positive reduction and interview slot scheduli
 
 - **FP Reduction Model (`matching/verification_scheduling.py`):** Trains an ensemble model on flagged-session data to filter out false proctoring flags.
 - **Interview Scheduling Engine:** Confirms interview slots for verified candidates[cite: 4].
+
 - **API Endpoint:**
   - `POST /interviews/schedule`: Schedules an interview slot for a student and job pair[cite: 4].
-  
+
+### Task 14 — End-to-End Status Tracking & Parsing
+
+Task 14 connects parsed skill signals into the central skills ontology and provides end-to-end application lifecycle tracking.
+
+- **Ontology Mapper (`matching/ontology_tracking.py`):** Maps unstructured candidate skills into domain-specific canonical categories.
+- **Lifecycle Tracker:** Monitors candidate state from application through proctoring, offer issuance, e-signing, and scheduling[cite: 5].
+
+- **API Endpoints:**
+  - `POST /parsing/ontology`: Map raw text skills to ontology categories[cite: 5].
+  - `GET /applications/status`: Retrieve full candidate lifecycle status[cite: 5].
+
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).
