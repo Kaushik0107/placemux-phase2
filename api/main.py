@@ -311,3 +311,37 @@ def item_quality_check_endpoint(items: List[ItemAnalytic]):
         "status": "SUCCESS",
         "data": result
     }
+
+from typing import List
+from pydantic import BaseModel
+from matching.rec_validation import validate_recommendation_quality, get_college_placement_portal_view
+
+class RecEvalItem(BaseModel):
+    student_id: str
+    recommended_job_ids: List[str]
+    relevant_job_ids: List[str]
+
+@app.post("/portals/validate-recommendations")
+def validate_recs_endpoint(items: List[RecEvalItem]):
+    data = [item.dict() for item in items]
+    result = validate_recommendation_quality(data)
+    return {
+        "status": "SUCCESS",
+        "data": result
+    }
+
+@app.get("/portals/college-view")
+def college_portal_view_endpoint(target_college_id: str, requesting_college_id: str):
+    # Simulated database records
+    mock_candidates = [
+        {"student_id": "STU_101", "college_id": "COLLEGE_A", "score": 88, "status": "SHORTLISTED"},
+        {"student_id": "STU_102", "college_id": "COLLEGE_A", "score": 91, "status": "PLACED"},
+        {"student_id": "STU_201", "college_id": "COLLEGE_B", "score": 85, "status": "SHORTLISTED"}
+    ]
+    result = get_college_placement_portal_view(target_college_id, requesting_college_id, mock_candidates)
+    if not result["access_granted"]:
+        raise HTTPException(status_code=403, detail=result["message"])
+    return {
+        "status": "SUCCESS",
+        "data": result
+    }

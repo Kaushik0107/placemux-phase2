@@ -240,10 +240,22 @@ Task 19 delivers bulk student onboarding processing and item-bank quality suppor
 
 - **Item-Bank Quality Engine (`matching/item_bank_onboarding.py`):** Flags weak assessment items using discrimination index thresholds and extreme error rate analysis[cite: 7].
 - **Bulk Onboarding Processor:** Handles bulk profile creation and skill ingestion[cite: 7].
+
 - **API Endpoints:**
   - `POST /onboarding/bulk`: Process bulk student onboarding records[cite: 7].
   - `POST /items/quality-check`: Analyze item-bank analytics and retrieve weak-item flags[cite: 7].
-  
+
+### Task 20 — Portals Integration & Dry Run
+
+Task 20 completes Week 5 Phase 2 by validating recommendation quality metrics and verifying college placement portal data isolation.
+
+- **Recommendation Validation Engine (`matching/rec_validation.py`):** Calculates Precision@K and Recall@K on integrated recommendation runs.
+- **Multi-Tenant Security Enforcement:** Guarantees strict college portal data isolation to prevent cross-tenant data leaks.
+
+- **API Endpoints:**
+  - `POST /portals/validate-recommendations`: Evaluate recommendation precision/recall on integrated datasets[cite: 8].
+  - `GET /portals/college-view`: Secure portal analytics endpoint enforcing college tenant isolation[cite: 8].
+
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).

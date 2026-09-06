@@ -252,3 +252,8 @@ benchmark.
 - Item-Bank Quality: Analyzed discrimination indices and error rates to identify weak assessment items (`matching/item_bank_onboarding.py`).
 - Bulk Onboarding: Enabled batch onboarding processing for student records.
 - Endpoints Added: POST /onboarding/bulk, POST /items/quality-check.
+
+## Task 20: Portals Integration & Dry Run (Recommendation Validation)
+- Recommendation Quality Validation: Evaluated Precision@K and Recall@K metrics on integrated recommendation data (`matching/rec_validation.py`).
+- Tenant Data Isolation: Verified multi-tenant security barrier enforcing strict isolation between college placement portals.
+- Endpoints Added: POST /portals/validate-recommendations, GET /portals/college-view.
