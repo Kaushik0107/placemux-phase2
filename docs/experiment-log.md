@@ -241,3 +241,8 @@ benchmark.
 - Ontology Integration: Mapped extracted skills dynamically into normalized taxonomy categories (`matching/ontology_tracking.py`).
 - Status Tracker: Built complete lifecycle tracker spanning application, proctoring, offer, e-signing, and interview scheduling.
 - Endpoints Added: POST /parsing/ontology, GET /applications/status.
+
+## Task 15: Trust Layer Integration & Dry Run
+- Pipeline Integration: Unified ontology parsing, proctoring FP reduction, and cryptographic offer verification (`matching/trust_signoff.py`).
+- Verification Result: Verified end-to-end dry run execution with tamper-evident hashing and plain-English explanations.
+- Endpoints Added: POST /trust/signoff.

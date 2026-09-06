@@ -224,6 +224,14 @@ Task 14 connects parsed skill signals into the central skills ontology and provi
   - `POST /parsing/ontology`: Map raw text skills to ontology categories[cite: 5].
   - `GET /applications/status`: Retrieve full candidate lifecycle status[cite: 5].
 
+### Task 15 — Trust Layer Integration & Dry Run
+
+Task 15 delivers the final end-to-end dry run sign-off across the entire PlaceMux intelligence and trust layer.
+
+- **Trust Sign-off Engine (`matching/trust_signoff.py`):** Integrates ontology skill mapping, proctoring verification, offer generation, and cryptographic hash checks into a unified pipeline.
+- **API Endpoint:**
+  - `POST /trust/signoff`: Executes full end-to-end AI trust dry run[cite: 6].  
+
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).

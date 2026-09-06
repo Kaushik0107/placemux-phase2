@@ -253,3 +253,30 @@ def track_application_status(student_id: str, job_id: str):
         "status": "SUCCESS",
         "data": status
     }
+
+from pydantic import BaseModel
+from matching.trust_signoff import run_ai_trust_signoff
+
+class TrustSignoffRequest(BaseModel):
+    student_id: str
+    job_id: str
+    raw_resume_text: str
+    gaze_off_screen_ratio: float
+    tab_switches: int
+
+@app.post("/trust/signoff")
+def execute_trust_signoff(req: TrustSignoffRequest):
+    session_data = {
+        "gaze_off_screen_ratio": req.gaze_off_screen_ratio,
+        "tab_switches": req.tab_switches
+    }
+    result = run_ai_trust_signoff(
+        student_id=req.student_id,
+        job_id=req.job_id,
+        raw_resume_text=req.raw_resume_text,
+        session_data=session_data
+    )
+    return {
+        "status": "SUCCESS",
+        "data": result
+    }
