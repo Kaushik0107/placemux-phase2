@@ -191,6 +191,17 @@ Task 11 begins the intelligence layer hardening for candidate proctoring and ass
 
 The objective is to replace rigid rule-based flag thresholds with a trained model that significantly reduces False Positive Rates (FPR) on integrity data without creating black-box decisions.
 
+### Task 12 — Resume/JD Parsing v0 & Offer Tamper-Evidence
+
+Task 12 delivers initial parsing capabilities for resumes/JDs and cryptographic tamper-evidence for job offers.
+
+- **Parsing v0 (`matching/parsing_esign.py`):** Extracts structured skills mapped to the skills ontology and calculates experience duration from unstructured text[cite: 3].
+- **Tamper-Evident Offers:** Generates SHA-256 hashes for canonical offer JSON payloads[cite: 3]. Any post-signing modification to the offer invalidates the document hash[cite: 3].
+- **API Endpoints:**
+  - `POST /parsing/v0`: Parse raw resume/JD text into structured features[cite: 3].
+  - `POST /offers/issue`: Issue an offer document with a cryptographic hash[cite: 3].
+  - `POST /offers/verify`: Verify if an offer payload has been tampered with[cite: 3].
+
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).

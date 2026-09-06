@@ -225,3 +225,9 @@ benchmark.
 - Hardened Model FPR: Reduced to <5% (RandomForest classifier on held-out split)
 - Explainability Status: Plain-English explanation generator added to API
 - Verification Endpoint: POST /proctoring/verify
+
+## Task 12: Resume/JD Parsing v0 & Tamper-Evidence
+- Parsing v0: Rule & ontology-based skill extraction (Python, ML, SQL, API Design) and experience parsing.
+- Tamper-Evidence: Cryptographic SHA-256 hashing implemented for offer payloads.
+- Endpoint: POST /parsing/v0, POST /offers/issue, POST /offers/verify.
+- Verification: Validated clean payload matching vs. tampered payload mismatch detection.

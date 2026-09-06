@@ -171,3 +171,46 @@ def verify_proctoring_status(req: ProctoringCheckRequest):
         "status": "FLAGGED" if is_flagged else "CLEARED",
         "explanation": explanation
     }    
+
+from pydantic import BaseModel
+from matching.parsing_esign import parse_resume_or_jd, generate_tamper_evident_offer, verify_offer_tamper_evidence
+
+class ParseRequest(BaseModel):
+    raw_text: str
+
+class OfferIssueRequest(BaseModel):
+    student_id: str
+    job_id: str
+    salary: int
+    role: str
+
+class OfferVerifyRequest(BaseModel):
+    offer_payload: dict
+    document_hash: str
+
+@app.post("/parsing/v0")
+def parse_document(req: ParseRequest):
+    result = parse_resume_or_jd(req.raw_text)
+    return {
+        "status": "SUCCESS",
+        "parsed_data": result,
+        "explanation": f"Successfully extracted {result['skill_count']} skills matched against ontology."
+    }
+
+@app.post("/offers/issue")
+def issue_offer(req: OfferIssueRequest):
+    offer = generate_tamper_evident_offer(
+        student_id=req.student_id,
+        job_id=req.job_id,
+        offer_details={"salary": req.salary, "role": req.role}
+    )
+    return offer
+
+@app.post("/offers/verify")
+def verify_offer(req: OfferVerifyRequest):
+    is_authentic = verify_offer_tamper_evidence(req.offer_payload, req.document_hash)
+    return {
+        "is_authentic": is_authentic,
+        "status": "VERIFIED_AUTHENTIC" if is_authentic else "TAMPER_DETECTED",
+        "explanation": "SHA-256 digital signature matches payload." if is_authentic else "Payload hash mismatch! Document has been modified."
+    }
