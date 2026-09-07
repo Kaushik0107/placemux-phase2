@@ -257,3 +257,8 @@ benchmark.
 - Recommendation Quality Validation: Evaluated Precision@K and Recall@K metrics on integrated recommendation data (`matching/rec_validation.py`).
 - Tenant Data Isolation: Verified multi-tenant security barrier enforcing strict isolation between college placement portals.
 - Endpoints Added: POST /portals/validate-recommendations, GET /portals/college-view.
+
+## Task 21: DPDP Consent & Security Foundations (Fairness Audit Start)
+- Bias Audit: Implemented Demographic Parity and Disparate Impact (80% rule) calculations across demographic groups (`matching/fairness_audit.py`).
+- DPDP Consent & Security: Built verifiable 'Right to be Forgotten' data deletion endpoint.
+- Endpoints Added: POST /security/fairness-audit, POST /security/dpdp-forget.

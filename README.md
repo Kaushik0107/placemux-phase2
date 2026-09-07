@@ -256,6 +256,17 @@ Task 20 completes Week 5 Phase 2 by validating recommendation quality metrics an
   - `POST /portals/validate-recommendations`: Evaluate recommendation precision/recall on integrated datasets[cite: 8].
   - `GET /portals/college-view`: Secure portal analytics endpoint enforcing college tenant isolation[cite: 8].
 
+### Task 21 — DPDP Consent & Security Foundations
+
+Task 21 initiates the bias/fairness auditing pipeline and implements DPDP compliance mechanisms.
+
+- **Fairness & Bias Audit Engine (`matching/fairness_audit.py`):** Audits candidate selection parity across demographic categories using disparate impact ratio analysis[cite: 9].
+- **DPDP Data Deletion Engine:** Facilitates verifiable data erasure in compliance with DPDP regulations[cite: 9].
+
+- **API Endpoints:**
+  - `POST /security/fairness-audit`: Evaluate candidate selection fairness across groups[cite: 9].
+  - `POST /security/dpdp-forget`: Trigger complete student personal data purging[cite: 9].
+
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).

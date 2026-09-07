@@ -345,3 +345,32 @@ def college_portal_view_endpoint(target_college_id: str, requesting_college_id: 
         "status": "SUCCESS",
         "data": result
     }
+
+from typing import List
+from pydantic import BaseModel
+from matching.fairness_audit import run_fairness_bias_audit, process_dpdp_data_erasure
+
+class CandidateAuditItem(BaseModel):
+    student_id: str
+    group: str
+    is_shortlisted: int
+
+class DPDPForgetRequest(BaseModel):
+    student_id: str
+
+@app.post("/security/fairness-audit")
+def fairness_audit_endpoint(candidates: List[CandidateAuditItem], protected_attribute: str = "group"):
+    data = [c.dict() for c in candidates]
+    result = run_fairness_bias_audit(data, protected_attribute)
+    return {
+        "status": "SUCCESS",
+        "data": result
+    }
+
+@app.post("/security/dpdp-forget")
+def dpdp_forget_endpoint(req: DPDPForgetRequest):
+    result = process_dpdp_data_erasure(req.student_id)
+    return {
+        "status": "SUCCESS",
+        "data": result
+    }
