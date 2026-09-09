@@ -195,34 +195,34 @@ The objective is to replace rigid rule-based flag thresholds with a trained mode
 
 Task 12 delivers initial parsing capabilities for resumes/JDs and cryptographic tamper-evidence for job offers.
 
-- **Parsing v0 (`matching/parsing_esign.py`):** Extracts structured skills mapped to the skills ontology and calculates experience duration from unstructured text[cite: 3].
-- **Tamper-Evident Offers:** Generates SHA-256 hashes for canonical offer JSON payloads[cite: 3]. Any post-signing modification to the offer invalidates the document hash[cite: 3].
+- **Parsing v0 (`matching/parsing_esign.py`):** Extracts structured skills mapped to the skills ontology and calculates experience duration from unstructured text.
+- **Tamper-Evident Offers:** Generates SHA-256 hashes for canonical offer JSON payloads. Any post-signing modification to the offer invalidates the document hash.
 
 - **API Endpoints:**
-  - `POST /parsing/v0`: Parse raw resume/JD text into structured features[cite: 3].
-  - `POST /offers/issue`: Issue an offer document with a cryptographic hash[cite: 3].
-  - `POST /offers/verify`: Verify if an offer payload has been tampered with[cite: 3].
+  - `POST /parsing/v0`: Parse raw resume/JD text into structured features.
+  - `POST /offers/issue`: Issue an offer document with a cryptographic hash.
+  - `POST /offers/verify`: Verify if an offer payload has been tampered with.
 
 ### Task 13 — Verification & Interview Scheduling
 
 Task 13 delivers proctoring false-positive reduction and interview slot scheduling for verified candidates.
 
 - **FP Reduction Model (`matching/verification_scheduling.py`):** Trains an ensemble model on flagged-session data to filter out false proctoring flags.
-- **Interview Scheduling Engine:** Confirms interview slots for verified candidates[cite: 4].
+- **Interview Scheduling Engine:** Confirms interview slots for verified candidates.
 
 - **API Endpoint:**
-  - `POST /interviews/schedule`: Schedules an interview slot for a student and job pair[cite: 4].
+  - `POST /interviews/schedule`: Schedules an interview slot for a student and job pai.
 
 ### Task 14 — End-to-End Status Tracking & Parsing
 
 Task 14 connects parsed skill signals into the central skills ontology and provides end-to-end application lifecycle tracking.
 
 - **Ontology Mapper (`matching/ontology_tracking.py`):** Maps unstructured candidate skills into domain-specific canonical categories.
-- **Lifecycle Tracker:** Monitors candidate state from application through proctoring, offer issuance, e-signing, and scheduling[cite: 5].
+- **Lifecycle Tracker:** Monitors candidate state from application through proctoring, offer issuance, e-signing, and scheduling.
 
 - **API Endpoints:**
-  - `POST /parsing/ontology`: Map raw text skills to ontology categories[cite: 5].
-  - `GET /applications/status`: Retrieve full candidate lifecycle status[cite: 5].
+  - `POST /parsing/ontology`: Map raw text skills to ontology categories.
+  - `GET /applications/status`: Retrieve full candidate lifecycle status.
 
 ### Task 15 — Trust Layer Integration & Dry Run
 
@@ -230,7 +230,7 @@ Task 15 delivers the final end-to-end dry run sign-off across the entire PlaceMu
 
 - **Trust Sign-off Engine (`matching/trust_signoff.py`):** Integrates ontology skill mapping, proctoring verification, offer generation, and cryptographic hash checks into a unified pipeline.
 - **API Endpoint:**
-  - `POST /trust/signoff`: Executes full end-to-end AI trust dry run[cite: 6].  
+  - `POST /trust/signoff`: Executes full end-to-end AI trust dry run.  
 
 ### Task 19 — Bulk Onboarding & Recruiter Views
 
@@ -238,12 +238,12 @@ Task 15 delivers the final end-to-end dry run sign-off across the entire PlaceMu
 
 Task 19 delivers bulk student onboarding processing and item-bank quality support for admins and recruiters.
 
-- **Item-Bank Quality Engine (`matching/item_bank_onboarding.py`):** Flags weak assessment items using discrimination index thresholds and extreme error rate analysis[cite: 7].
-- **Bulk Onboarding Processor:** Handles bulk profile creation and skill ingestion[cite: 7].
+- **Item-Bank Quality Engine (`matching/item_bank_onboarding.py`):** Flags weak assessment items using discrimination index thresholds and extreme error rate analysis.
+- **Bulk Onboarding Processor:** Handles bulk profile creation and skill ingestion.
 
 - **API Endpoints:**
-  - `POST /onboarding/bulk`: Process bulk student onboarding records[cite: 7].
-  - `POST /items/quality-check`: Analyze item-bank analytics and retrieve weak-item flags[cite: 7].
+  - `POST /onboarding/bulk`: Process bulk student onboarding records.
+  - `POST /items/quality-check`: Analyze item-bank analytics and retrieve weak-item flags.
 
 ### Task 20 — Portals Integration & Dry Run
 
@@ -253,42 +253,42 @@ Task 20 completes Week 5 Phase 2 by validating recommendation quality metrics an
 - **Multi-Tenant Security Enforcement:** Guarantees strict college portal data isolation to prevent cross-tenant data leaks.
 
 - **API Endpoints:**
-  - `POST /portals/validate-recommendations`: Evaluate recommendation precision/recall on integrated datasets[cite: 8].
-  - `GET /portals/college-view`: Secure portal analytics endpoint enforcing college tenant isolation[cite: 8].
+  - `POST /portals/validate-recommendations`: Evaluate recommendation precision/recall on integrated datasets.
+  - `GET /portals/college-view`: Secure portal analytics endpoint enforcing college tenant isolation.
 
 ### Task 21 — DPDP Consent & Security Foundations
 
 Task 21 initiates the bias/fairness auditing pipeline and implements DPDP compliance mechanisms.
 
-- **Fairness & Bias Audit Engine (`matching/fairness_audit.py`):** Audits candidate selection parity across demographic categories using disparate impact ratio analysis[cite: 9].
-- **DPDP Data Deletion Engine:** Facilitates verifiable data erasure in compliance with DPDP regulations[cite: 9].
+- **Fairness & Bias Audit Engine (`matching/fairness_audit.py`):** Audits candidate selection parity across demographic categories using disparate impact ratio analysis.
+- **DPDP Data Deletion Engine:** Facilitates verifiable data erasure in compliance with DPDP regulations.
 
 - **API Endpoints:**
-  - `POST /security/fairness-audit`: Evaluate candidate selection fairness across groups[cite: 9].
-  - `POST /security/dpdp-forget`: Trigger complete student personal data purging[cite: 9].
+  - `POST /security/fairness-audit`: Evaluate candidate selection fairness across groups.
+  - `POST /security/dpdp-forget`: Trigger complete student personal data purging.
 
 ### Task 22 — Data-Subject Rights & Resilience
 
 Task 22 stands up feature drift monitoring and automated model retraining pipelines for MLOps resilience.
 
-- **Drift Monitoring Engine (`matching/drift_retraining.py`):** Uses KS statistical testing to compare baseline feature distributions against live inference inputs[cite: 8].
-- **Automated Retraining Module:** Triggers automated model refitting when feature distribution drift is detected[cite: 8].
+- **Drift Monitoring Engine (`matching/drift_retraining.py`):** Uses KS statistical testing to compare baseline feature distributions against live inference inputs.
+- **Automated Retraining Module:** Triggers automated model refitting when feature distribution drift is detected.
 
 - **API Endpoints:**
-  - `POST /mlops/drift-check`: Evaluate statistical feature drift between reference and live distributions[cite: 8].
-  - `POST /mlops/trigger-retrain`: Execute automated model retraining on new production data[cite: 8].
+  - `POST /mlops/drift-check`: Evaluate statistical feature drift between reference and live distributions.
+  - `POST /mlops/trigger-retrain`: Execute automated model retraining on new production data.
   
   ### Task 23 — Hardening, Scale & MLOps
 
 Task 23 establishes the MLOps foundation with a central feature store and model registry.
 
-- **Feature Store & Registry Engine (`matching/registry_feature_store.py`):** Persists feature space vectors and manages model metadata/stages[cite: 9].
+- **Feature Store & Registry Engine (`matching/registry_feature_store.py`):** Persists feature space vectors and manages model metadata/stages.
 
 - **API Endpoints:**
-  - `POST /mlops/features/store`: Ingest entity features into the feature store[cite: 9].
-  - `GET /mlops/features/{entity_id}`: Retrieve online features for inference[cite: 9].
-  - `POST /mlops/registry/register`: Register model artifacts with evaluation metrics and deployment stages[cite: 9].
-  
+  - `POST /mlops/features/store`: Ingest entity features into the feature store.
+  - `GET /mlops/features/{entity_id}`: Retrieve online features for inference.
+  - `POST /mlops/registry/register`: Register model artifacts with evaluation metrics and deployment stages.
+
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).
