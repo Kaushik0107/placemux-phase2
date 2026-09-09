@@ -403,3 +403,33 @@ def trigger_retrain_endpoint(samples: List[RetrainSample]):
         "status": "SUCCESS",
         "data": result
     }
+
+from pydantic import BaseModel
+from matching.registry_feature_store import store_entity_features, get_entity_features, register_model_version
+
+class FeatureStoreRequest(BaseModel):
+    entity_id: str
+    features: dict
+
+class ModelRegisterRequest(BaseModel):
+    model_name: str
+    version: str
+    metrics: dict
+    stage: str = "STAGING"
+
+@app.post("/mlops/features/store")
+def store_features_endpoint(req: FeatureStoreRequest):
+    result = store_entity_features(req.entity_id, req.features)
+    return {"status": "SUCCESS", "data": result}
+
+@app.get("/mlops/features/{entity_id}")
+def fetch_features_endpoint(entity_id: str):
+    result = get_entity_features(entity_id)
+    if not result["found"]:
+        raise HTTPException(status_code=404, detail=f"Entity '{entity_id}' not found in Feature Store.")
+    return {"status": "SUCCESS", "data": result}
+
+@app.post("/mlops/registry/register")
+def register_model_endpoint(req: ModelRegisterRequest):
+    result = register_model_version(req.model_name, req.version, req.metrics, req.stage)
+    return {"status": "SUCCESS", "data": result}

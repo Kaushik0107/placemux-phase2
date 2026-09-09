@@ -267,3 +267,8 @@ benchmark.
 - Drift Monitoring Engine: Implemented Kolmogorov-Smirnov (KS) two-sample test for feature distribution drift detection (`matching/drift_retraining.py`).
 - Automated Retraining Pipeline: Implemented automated retraining trigger on drifted dataset batches.
 - Endpoints Added: POST /mlops/drift-check, POST /mlops/trigger-retrain.
+
+## Task 23: Hardening, Scale & MLOps (Registry + Feature Store)
+- Feature Store: Implemented central feature store for serving candidate and job feature vectors (`matching/registry_feature_store.py`).
+- Model Registry: Built versioning and deployment stage tracking (STAGING, PRODUCTION) for trained ML models.
+- Endpoints Added: POST /mlops/features/store, GET /mlops/features/{entity_id}, POST /mlops/registry/register.

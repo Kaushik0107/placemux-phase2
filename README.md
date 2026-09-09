@@ -277,6 +277,18 @@ Task 22 stands up feature drift monitoring and automated model retraining pipeli
 - **API Endpoints:**
   - `POST /mlops/drift-check`: Evaluate statistical feature drift between reference and live distributions[cite: 8].
   - `POST /mlops/trigger-retrain`: Execute automated model retraining on new production data[cite: 8].
+  
+  ### Task 23 — Hardening, Scale & MLOps
+
+Task 23 establishes the MLOps foundation with a central feature store and model registry.
+
+- **Feature Store & Registry Engine (`matching/registry_feature_store.py`):** Persists feature space vectors and manages model metadata/stages[cite: 9].
+
+- **API Endpoints:**
+  - `POST /mlops/features/store`: Ingest entity features into the feature store[cite: 9].
+  - `GET /mlops/features/{entity_id}`: Retrieve online features for inference[cite: 9].
+  - `POST /mlops/registry/register`: Register model artifacts with evaluation metrics and deployment stages[cite: 9].
+  
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).
