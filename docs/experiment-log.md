@@ -262,3 +262,8 @@ benchmark.
 - Bias Audit: Implemented Demographic Parity and Disparate Impact (80% rule) calculations across demographic groups (`matching/fairness_audit.py`).
 - DPDP Consent & Security: Built verifiable 'Right to be Forgotten' data deletion endpoint.
 - Endpoints Added: POST /security/fairness-audit, POST /security/dpdp-forget.
+
+## Task 22: Data-Subject Rights & Resilience (Drift + Retraining)
+- Drift Monitoring Engine: Implemented Kolmogorov-Smirnov (KS) two-sample test for feature distribution drift detection (`matching/drift_retraining.py`).
+- Automated Retraining Pipeline: Implemented automated retraining trigger on drifted dataset batches.
+- Endpoints Added: POST /mlops/drift-check, POST /mlops/trigger-retrain.

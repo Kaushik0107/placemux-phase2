@@ -374,3 +374,32 @@ def dpdp_forget_endpoint(req: DPDPForgetRequest):
         "status": "SUCCESS",
         "data": result
     }
+
+from typing import List
+from pydantic import BaseModel
+from matching.drift_retraining import detect_feature_drift, execute_model_retraining
+
+class DriftCheckRequest(BaseModel):
+    reference_distribution: List[float]
+    current_distribution: List[float]
+
+class RetrainSample(BaseModel):
+    feature_val: float
+    label: int
+
+@app.post("/mlops/drift-check")
+def drift_check_endpoint(req: DriftCheckRequest):
+    result = detect_feature_drift(req.reference_distribution, req.current_distribution)
+    return {
+        "status": "SUCCESS",
+        "data": result
+    }
+
+@app.post("/mlops/trigger-retrain")
+def trigger_retrain_endpoint(samples: List[RetrainSample]):
+    data = [s.dict() for s in samples]
+    result = execute_model_retraining(data)
+    return {
+        "status": "SUCCESS",
+        "data": result
+    }

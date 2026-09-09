@@ -267,6 +267,16 @@ Task 21 initiates the bias/fairness auditing pipeline and implements DPDP compli
   - `POST /security/fairness-audit`: Evaluate candidate selection fairness across groups[cite: 9].
   - `POST /security/dpdp-forget`: Trigger complete student personal data purging[cite: 9].
 
+### Task 22 — Data-Subject Rights & Resilience
+
+Task 22 stands up feature drift monitoring and automated model retraining pipelines for MLOps resilience.
+
+- **Drift Monitoring Engine (`matching/drift_retraining.py`):** Uses KS statistical testing to compare baseline feature distributions against live inference inputs[cite: 8].
+- **Automated Retraining Module:** Triggers automated model refitting when feature distribution drift is detected[cite: 8].
+
+- **API Endpoints:**
+  - `POST /mlops/drift-check`: Evaluate statistical feature drift between reference and live distributions[cite: 8].
+  - `POST /mlops/trigger-retrain`: Execute automated model retraining on new production data[cite: 8].
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).
