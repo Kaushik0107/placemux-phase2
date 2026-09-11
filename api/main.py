@@ -455,3 +455,21 @@ def launch_rehearsal_endpoint(req: LaunchSignoffRequest):
         "status": "SUCCESS",
         "data": result
     }
+
+from pydantic import BaseModel
+from matching.live_monitoring import record_inference_telemetry, evaluate_production_health
+
+class TelemetryLogRequest(BaseModel):
+    endpoint: str
+    latency_ms: float
+    is_error: bool = False
+
+@app.post("/production/monitoring/log")
+def log_telemetry_endpoint(req: TelemetryLogRequest):
+    record_inference_telemetry(req.endpoint, req.latency_ms, req.is_error)
+    return {"status": "SUCCESS", "message": "Telemetry logged."}
+
+@app.get("/production/monitoring/health")
+def production_health_endpoint():
+    result = evaluate_production_health()
+    return {"status": "SUCCESS", "data": result}

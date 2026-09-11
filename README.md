@@ -298,6 +298,15 @@ Task 24 closes the fairness audit and issues final ML model sign-offs for produc
 - **API Endpoint:**
   - `POST /launch/rehearsal-signoff`: Run launch rehearsal fairness checks and generate model sign-off certificates.
 
+### Task 25 — Go-Live
+
+Task 25 delivers live model monitoring and production cutover verification for the PlaceMux platform.
+
+- **Live Monitoring Engine (`matching/live_monitoring.py`):** Tracks production inference latency distribution and error rates against SLAs.
+- **API Endpoints:**
+  - `POST /production/monitoring/log`: Ingest live production inference telemetry logs.
+  - `GET /production/monitoring/health`: Evaluate production health SLAs and cutover sign-off.
+
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).

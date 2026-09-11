@@ -277,3 +277,8 @@ benchmark.
 - Fairness Close: Conducted final demographic bias audit and disparate impact calculations across all candidate segments (`matching/launch_signoff.py`).
 - Model Launch Sign-off: Generated verifiable sign-off certificates for production deployment.
 - Endpoints Added: POST /launch/rehearsal-signoff.
+
+## Task 25: Go-Live (Live Model Monitoring)
+- Live Telemetry & Monitoring: Implemented real-time inference telemetry tracking p95/p99 latencies and production error rates (`matching/live_monitoring.py`).
+- Cutover SLA Evaluation: Verified production cutover sign-off based on SLA metrics (p95 latency <= 100ms, error rate <= 1%).
+- Endpoints Added: POST /production/monitoring/log, GET /production/monitoring/health.
