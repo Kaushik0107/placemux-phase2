@@ -433,3 +433,25 @@ def fetch_features_endpoint(entity_id: str):
 def register_model_endpoint(req: ModelRegisterRequest):
     result = register_model_version(req.model_name, req.version, req.metrics, req.stage)
     return {"status": "SUCCESS", "data": result}
+
+from typing import List
+from pydantic import BaseModel
+from matching.launch_signoff import execute_fairness_close_and_signoff
+
+class LaunchAuditItem(BaseModel):
+    student_id: str
+    group: str
+    is_shortlisted: int
+
+class LaunchSignoffRequest(BaseModel):
+    model_name: str
+    candidates: List[LaunchAuditItem]
+
+@app.post("/launch/rehearsal-signoff")
+def launch_rehearsal_endpoint(req: LaunchSignoffRequest):
+    candidates_data = [c.dict() for c in req.candidates]
+    result = execute_fairness_close_and_signoff(candidates_data, req.model_name)
+    return {
+        "status": "SUCCESS",
+        "data": result
+    }

@@ -272,3 +272,8 @@ benchmark.
 - Feature Store: Implemented central feature store for serving candidate and job feature vectors (`matching/registry_feature_store.py`).
 - Model Registry: Built versioning and deployment stage tracking (STAGING, PRODUCTION) for trained ML models.
 - Endpoints Added: POST /mlops/features/store, GET /mlops/features/{entity_id}, POST /mlops/registry/register.
+
+## Task 24: Launch Rehearsal (Fairness Close & Model Sign-off)
+- Fairness Close: Conducted final demographic bias audit and disparate impact calculations across all candidate segments (`matching/launch_signoff.py`).
+- Model Launch Sign-off: Generated verifiable sign-off certificates for production deployment.
+- Endpoints Added: POST /launch/rehearsal-signoff.

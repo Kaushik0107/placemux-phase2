@@ -289,6 +289,15 @@ Task 23 establishes the MLOps foundation with a central feature store and model 
   - `GET /mlops/features/{entity_id}`: Retrieve online features for inference.
   - `POST /mlops/registry/register`: Register model artifacts with evaluation metrics and deployment stages.
 
+### Task 24 — Launch Rehearsal
+
+Task 24 closes the fairness audit and issues final ML model sign-offs for production launch readiness.
+
+- **Launch Rehearsal Engine (`matching/launch_signoff.py`):** Closes fairness auditing and validates disparate impact metrics against the 80% threshold.
+
+- **API Endpoint:**
+  - `POST /launch/rehearsal-signoff`: Run launch rehearsal fairness checks and generate model sign-off certificates.
+
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).
