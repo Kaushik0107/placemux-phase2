@@ -474,16 +474,18 @@ def production_health_endpoint():
     result = evaluate_production_health()
     return {"status": "SUCCESS", "data": result}
 
-from typing import List
-from pydantic import BaseModel
+
 from matching.post_launch_health import generate_model_health_report, triage_intelligence_defects
+from typing import List, Optional  # <--- Import Optional
+from pydantic import BaseModel
 
 class LogItem(BaseModel):
     student_id: str
     job_id: str
     predicted_match: int
     user_accepted: int
-    missing_skill: str = None
+    missing_skill: Optional[str] = None  # <--- Change str = None to Optional[str] = None
+
 
 @app.post("/health/model-report")
 def model_health_report_endpoint(logs: List[LogItem], offline_baseline: float = 0.94):
