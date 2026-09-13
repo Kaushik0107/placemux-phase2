@@ -303,9 +303,20 @@ Task 24 closes the fairness audit and issues final ML model sign-offs for produc
 Task 25 delivers live model monitoring and production cutover verification for the PlaceMux platform.
 
 - **Live Monitoring Engine (`matching/live_monitoring.py`):** Tracks production inference latency distribution and error rates against SLAs.
+
 - **API Endpoints:**
   - `POST /production/monitoring/log`: Ingest live production inference telemetry logs.
   - `GET /production/monitoring/health`: Evaluate production health SLAs and cutover sign-off.
+
+### Phase 3 Task 1 — Post-Launch Health & Incident Triage
+
+Task 1 of Phase 3 establishes the post-launch model health baseline and triages live intelligence defects.
+
+- **Health & Defect Triage Engine (`matching/post_launch_health.py`):** Calculates offline vs online F1 metric gaps and ranks intelligence defects from interaction logs.
+
+- **API Endpoints:**
+  - `POST /health/model-report`: Generate live offline vs. online performance gap report.
+  - `POST /health/triage-defects`: Triage interaction defects and generate Phase 3 backlog.
 
 #### Technical Implementation
 
