@@ -282,3 +282,8 @@ benchmark.
 - Live Telemetry & Monitoring: Implemented real-time inference telemetry tracking p95/p99 latencies and production error rates (`matching/live_monitoring.py`).
 - Cutover SLA Evaluation: Verified production cutover sign-off based on SLA metrics (p95 latency <= 100ms, error rate <= 1%).
 - Endpoints Added: POST /production/monitoring/log, GET /production/monitoring/health.
+
+## Phase 3 Task 1: Post-Launch Health & Defect Triage
+- Model-Health Report: Measured offline vs online metric gap (Offline F1: 94% vs Live Online F1: 66.7%, Gap: 27.3%) on live prediction logs (`matching/post_launch_health.py`).
+- Defect Triage & Backlog: Categorized intelligence defects (false positives/negatives) and established Phase 3 matching system backlog.
+- Endpoints Added: POST /health/model-report, POST /health/triage-defects.

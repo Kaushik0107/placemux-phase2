@@ -473,3 +473,26 @@ def log_telemetry_endpoint(req: TelemetryLogRequest):
 def production_health_endpoint():
     result = evaluate_production_health()
     return {"status": "SUCCESS", "data": result}
+
+from typing import List
+from pydantic import BaseModel
+from matching.post_launch_health import generate_model_health_report, triage_intelligence_defects
+
+class LogItem(BaseModel):
+    student_id: str
+    job_id: str
+    predicted_match: int
+    user_accepted: int
+    missing_skill: str = None
+
+@app.post("/health/model-report")
+def model_health_report_endpoint(logs: List[LogItem], offline_baseline: float = 0.94):
+    logs_data = [l.dict() for l in logs]
+    result = generate_model_health_report(logs_data, offline_baseline)
+    return {"status": "SUCCESS", "data": result}
+
+@app.post("/health/triage-defects")
+def triage_defects_endpoint(logs: List[LogItem]):
+    logs_data = [l.dict() for l in logs]
+    result = triage_intelligence_defects(logs_data)
+    return {"status": "SUCCESS", "data": result}
