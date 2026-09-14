@@ -498,3 +498,29 @@ def triage_defects_endpoint(logs: List[LogItem]):
     logs_data = [l.dict() for l in logs]
     result = triage_intelligence_defects(logs_data)
     return {"status": "SUCCESS", "data": result}
+
+from typing import List, Optional
+from pydantic import BaseModel
+from matching.slo_observability import evaluate_inference_slos, MONTHLY_ERROR_BUDGET_CAP
+
+class TelemetryEvalItem(BaseModel):
+    latency_ms: float
+    is_error: bool = False
+    prediction_score: Optional[float] = 0.5
+
+@app.post("/observability/eval-slo")
+def eval_slo_endpoint(logs: List[TelemetryEvalItem], p95_target_ms: float = 100.0, min_availability: float = 0.999):
+    logs_data = [l.dict() for l in logs]
+    result = evaluate_inference_slos(logs_data, p95_target_ms, min_availability)
+    return {"status": "SUCCESS", "data": result}
+
+@app.get("/observability/error-budget")
+def error_budget_endpoint():
+    return {
+        "status": "SUCCESS",
+        "data": {
+            "monthly_budget_capacity": MONTHLY_ERROR_BUDGET_CAP,
+            "policy": "SLO breaches freeze non-critical production deployments until budget resets.",
+            "owner": "DevOps / MLOps Platform Team"
+        }
+    }

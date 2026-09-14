@@ -287,3 +287,8 @@ benchmark.
 - Model-Health Report: Measured offline vs online metric gap (Offline F1: 94% vs Live Online F1: 66.7%, Gap: 27.3%) on live prediction logs (`matching/post_launch_health.py`).
 - Defect Triage & Backlog: Categorized intelligence defects (false positives/negatives) and established Phase 3 matching system backlog.
 - Endpoints Added: POST /health/model-report, POST /health/triage-defects.
+
+## Phase 3 Task 2: Observability Deep-Dive, SLOs & Error Budgets
+- Inference SLOs: Defined p95 latency (<= 100ms), availability (>= 99.9%), and degenerate variance detection (`matching/slo_observability.py`).
+- Alerting & Error Budget: Calculated burn rate against monthly cap (100 failures) and added alerting for constant/degenerate score distributions.
+- Endpoints Added: POST /observability/eval-slo, GET /observability/error-budget.

@@ -318,6 +318,16 @@ Task 1 of Phase 3 establishes the post-launch model health baseline and triages 
   - `POST /health/model-report`: Generate live offline vs. online performance gap report.
   - `POST /health/triage-defects`: Triage interaction defects and generate Phase 3 backlog.
 
+### Phase 3 Task 2 — Observability Deep-Dive, SLOs & Error Budgets
+
+Task 2 establishes inference layer SLOs, automated alert triggers, and error budget tracking.
+
+- **SLO Engine & Alerting (`matching/slo_observability.py`):** Monitors p95 latency, availability floors, and prediction score variance.
+
+- **API Endpoints:**
+  - `POST /observability/eval-slo`: Evaluate live telemetry against SLO thresholds and return active alerts.
+  - `GET /observability/error-budget`: Retrieve error budget policy and capacity status.
+
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).
