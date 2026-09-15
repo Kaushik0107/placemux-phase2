@@ -328,6 +328,16 @@ Task 2 establishes inference layer SLOs, automated alert triggers, and error bud
   - `POST /observability/eval-slo`: Evaluate live telemetry against SLO thresholds and return active alerts.
   - `GET /observability/error-budget`: Retrieve error budget policy and capacity status.
 
+### Phase 3 Task 3 — Performance Profiling & Bottleneck Elimination
+
+Task 3 delivers inference latency profiling and optimization to meet latency SLOs without sacrificing matching quality.
+
+- **Performance Profiler Engine (`matching/latency_profiler.py`):** Profiles pipeline stages and executes vectorized batch optimization.
+
+- **API Endpoints:**
+  - `POST /performance/profile-inference`: Profile unoptimized inference path latency and compute cost.
+  - `POST /performance/optimize-inference`: Execute optimized inference path meeting latency SLOs.
+
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).

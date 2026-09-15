@@ -524,3 +524,19 @@ def error_budget_endpoint():
             "owner": "DevOps / MLOps Platform Team"
         }
     }
+
+from pydantic import BaseModel
+from matching.latency_profiler import profile_unoptimized_inference_path, profile_optimized_inference_path
+
+class ProfileRequest(BaseModel):
+    num_candidates: int = 100
+
+@app.post("/performance/profile-inference")
+def profile_inference_endpoint(req: ProfileRequest):
+    result = profile_unoptimized_inference_path(req.num_candidates)
+    return {"status": "SUCCESS", "data": result}
+
+@app.post("/performance/optimize-inference")
+def optimize_inference_endpoint(req: ProfileRequest):
+    result = profile_optimized_inference_path(req.num_candidates)
+    return {"status": "SUCCESS", "data": result}
