@@ -540,3 +540,20 @@ def profile_inference_endpoint(req: ProfileRequest):
 def optimize_inference_endpoint(req: ProfileRequest):
     result = profile_optimized_inference_path(req.num_candidates)
     return {"status": "SUCCESS", "data": result}
+
+from pydantic import BaseModel
+from matching.scale_load_test import execute_concurrency_load_test, get_horizontal_scaling_plan
+
+class LoadTestRequest(BaseModel):
+    target_qps: int = 600
+    breaking_point_qps: int = 500
+
+@app.post("/scale/run-load-test")
+def run_load_test_endpoint(req: LoadTestRequest):
+    result = execute_concurrency_load_test(req.target_qps, req.breaking_point_qps)
+    return {"status": "SUCCESS", "data": result}
+
+@app.get("/scale/plan")
+def get_scaling_plan_endpoint():
+    result = get_horizontal_scaling_plan()
+    return {"status": "SUCCESS", "data": result}

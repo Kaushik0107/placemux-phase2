@@ -297,3 +297,8 @@ benchmark.
 - Latency Profile: Profiled inference bottlenecks across vector search, feature lookup, and scoring (`matching/latency_profiler.py`).
 - Optimization Results: Reduced p95 latency from ~120ms to ~20ms (83.3% latency reduction) via vector indexing and feature caching while preserving recommendation quality.
 - Endpoints Added: POST /performance/profile-inference, POST /performance/optimize-inference.
+
+## Phase 3 Task 4: Horizontal Scale & Load Readiness
+- Load Testing & Breaking Point: Identified 500 QPS single-instance breaking point and verified pre-compute fallback activation above threshold (`matching/scale_load_test.py`).
+- Scaling Architecture Plan: Formulated HPA autoscale policy (3-15 pod range) and pre-computed cache strategy for DevOps hand-off.
+- Endpoints Added: POST /scale/run-load-test, GET /scale/plan.

@@ -338,6 +338,16 @@ Task 3 delivers inference latency profiling and optimization to meet latency SLO
   - `POST /performance/profile-inference`: Profile unoptimized inference path latency and compute cost.
   - `POST /performance/optimize-inference`: Execute optimized inference path meeting latency SLOs.
 
+### Phase 3 Task 4 — Horizontal Scale & Load Readiness
+
+Task 4 proves intelligence layer resilience under marketplace-scale concurrency and formulates scaling plans.
+
+- **Load Test & Scaling Engine (`matching/scale_load_test.py`):** Executes high-QPS load simulations, identifies system breaking points, and triggers precompute fallbacks.
+
+- **API Endpoints:**
+  - `POST /scale/run-load-test`: Execute concurrency load test and inspect fallback state.
+  - `GET /scale/plan`: Retrieve horizontal pod autoscaling specifications for DevOps integration.
+
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).
