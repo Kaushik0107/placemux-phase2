@@ -348,6 +348,16 @@ Task 4 proves intelligence layer resilience under marketplace-scale concurrency 
   - `POST /scale/run-load-test`: Execute concurrency load test and inspect fallback state.
   - `GET /scale/plan`: Retrieve horizontal pod autoscaling specifications for DevOps integration.
 
+### Phase 3 Task 5 — Reliability Sign-off & Scale Integration
+
+Task 5 signs off the intelligence layer as scale-ready with sustained load testing and verified fallbacks.
+
+- **Scale Reliability Engine (`matching/reliability_signoff.py`):** Runs load simulations, evaluates capacity headroom, tests failure injections, and generates scale sign-off certificates.
+
+- **API Endpoints:**
+  - `POST /reliability/load-test`: Execute load test simulations with optional failure injection.
+  - `POST /reliability/signoff`: Generate formal scale reliability sign-off certificate.
+
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).

@@ -557,3 +557,26 @@ def run_load_test_endpoint(req: LoadTestRequest):
 def get_scaling_plan_endpoint():
     result = get_horizontal_scaling_plan()
     return {"status": "SUCCESS", "data": result}
+
+from pydantic import BaseModel
+from matching.reliability_signoff import execute_load_test_simulation, generate_reliability_signoff
+
+class LoadTestRequest(BaseModel):
+    target_rps: int = 500
+    duration_sec: float = 1.0
+    force_failure: bool = False
+
+class SignoffRequest(BaseModel):
+    model_version: str = "PlaceMux_Phase3_SprintA_v1.0"
+    target_rps: int = 500
+
+@app.post("/reliability/load-test")
+def load_test_endpoint(req: LoadTestRequest):
+    result = execute_load_test_simulation(req.target_rps, req.duration_sec, req.force_failure)
+    return {"status": "SUCCESS", "data": result}
+
+@app.post("/reliability/signoff")
+def reliability_signoff_endpoint(req: SignoffRequest):
+    test_result = execute_load_test_simulation(req.target_rps, 1.0, False)
+    result = generate_reliability_signoff(test_result, req.model_version)
+    return {"status": "SUCCESS", "data": result}

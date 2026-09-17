@@ -302,3 +302,8 @@ benchmark.
 - Load Testing & Breaking Point: Identified 500 QPS single-instance breaking point and verified pre-compute fallback activation above threshold (`matching/scale_load_test.py`).
 - Scaling Architecture Plan: Formulated HPA autoscale policy (3-15 pod range) and pre-computed cache strategy for DevOps hand-off.
 - Endpoints Added: POST /scale/run-load-test, GET /scale/plan.
+
+## Phase 3 Task 5: Reliability Sign-off & Scale Integration
+- Load Testing & Headroom: Simulated sustained 500 RPS load demonstrating p95 latency < 30ms and 2.0x headroom capacity (`matching/reliability_signoff.py`).
+- Fallback & Failure Injection: Verified automated rule-based fallback activation during forced failure injection.
+- Endpoints Added: POST /reliability/load-test, POST /reliability/signoff.
