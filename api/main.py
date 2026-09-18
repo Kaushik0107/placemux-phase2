@@ -580,3 +580,36 @@ def reliability_signoff_endpoint(req: SignoffRequest):
     test_result = execute_load_test_simulation(req.target_rps, 1.0, False)
     result = generate_reliability_signoff(test_result, req.model_version)
     return {"status": "SUCCESS", "data": result}
+
+from typing import List
+from pydantic import BaseModel
+from matching.growth_instrumentation import log_ranked_impression, log_user_outcome, reconstruct_session_trace
+
+class ImpressionRequest(BaseModel):
+    candidate_ids: List[str]
+    model_version: str = "PlaceMux_Ranking_v2.1"
+    user_id: str = "USER_101"
+
+class OutcomeRequest(BaseModel):
+    impression_id: str
+    candidate_id: str
+    event_type: str  # click, apply, shortlist, dismiss
+
+@app.post("/growth/log-impression")
+def log_impression_endpoint(req: ImpressionRequest):
+    result = log_ranked_impression(req.candidate_ids, req.model_version, req.user_id)
+    return {"status": "SUCCESS", "data": result}
+
+@app.post("/growth/log-outcome")
+def log_outcome_endpoint(req: OutcomeRequest):
+    result = log_user_outcome(req.impression_id, req.candidate_id, req.event_type)
+    if result.get("status") == "ERROR":
+        raise HTTPException(status_code=400, detail=result["message"])
+    return {"status": "SUCCESS", "data": result}
+
+@app.get("/growth/reconstruct/{impression_id}")
+def reconstruct_trace_endpoint(impression_id: str):
+    result = reconstruct_session_trace(impression_id)
+    if not result["found"]:
+        raise HTTPException(status_code=404, detail=result["message"])
+    return {"status": "SUCCESS", "data": result}
