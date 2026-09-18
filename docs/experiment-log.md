@@ -307,3 +307,8 @@ benchmark.
 - Load Testing & Headroom: Simulated sustained 500 RPS load demonstrating p95 latency < 30ms and 2.0x headroom capacity (`matching/reliability_signoff.py`).
 - Fallback & Failure Injection: Verified automated rule-based fallback activation during forced failure injection.
 - Endpoints Added: POST /reliability/load-test, POST /reliability/signoff.
+
+## Phase 3 Task 6: Growth Instrumentation & North-Star Metrics
+- Position & Version Logging: Implemented impression event schema tracking position index, model version, and user ID (`matching/growth_instrumentation.py`).
+- Outcome Attribution: Linked conversion events (click, apply, shortlist) to impression IDs for trace reconstruction.
+- Endpoints Added: POST /growth/log-impression, POST /growth/log-outcome, GET /growth/reconstruct/{impression_id}.

@@ -358,6 +358,17 @@ Task 5 signs off the intelligence layer as scale-ready with sustained load testi
   - `POST /reliability/load-test`: Execute load test simulations with optional failure injection.
   - `POST /reliability/signoff`: Generate formal scale reliability sign-off certificate.
 
+### Phase 3 Task 6 — Growth Instrumentation & North-Star Metrics
+
+Task 6 delivers position-level impression logging and outcome event attribution.
+
+- **Growth Engine (`matching/growth_instrumentation.py`):** Logs candidate rankings with position indices and links conversion events.
+
+- **API Endpoints:**
+  - `POST /growth/log-impression`: Record ranked candidate list impression and model version.
+  - `POST /growth/log-outcome`: Attribute user actions (click, apply, shortlist) to an impression ID.
+  - `GET /growth/reconstruct/{impression_id}`: Reconstruct ranking position and outcome history.
+
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).
