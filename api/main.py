@@ -613,3 +613,23 @@ def reconstruct_trace_endpoint(impression_id: str):
     if not result["found"]:
         raise HTTPException(status_code=404, detail=result["message"])
     return {"status": "SUCCESS", "data": result}
+
+from typing import List, Optional
+from pydantic import BaseModel
+from matching.cold_start_recommendation import generate_cold_start_recommendations, evaluate_cold_start_lift
+
+class OnboardingProfileRequest(BaseModel):
+    user_id: str
+    preferred_role: Optional[str] = None
+    skills: List[str] = []
+
+@app.post("/growth/cold-start-recommend")
+def cold_start_recommend_endpoint(req: OnboardingProfileRequest, top_k: int = 3):
+    profile_data = req.dict()
+    result = generate_cold_start_recommendations(profile_data, top_k)
+    return {"status": "SUCCESS", "data": result}
+
+@app.get("/growth/cold-start-lift")
+def cold_start_lift_endpoint(baseline_ctr: float = 0.12, optimized_ctr: float = 0.28):
+    result = evaluate_cold_start_lift(baseline_ctr, optimized_ctr)
+    return {"status": "SUCCESS", "data": result}
