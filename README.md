@@ -369,6 +369,16 @@ Task 6 delivers position-level impression logging and outcome event attribution.
   - `POST /growth/log-outcome`: Attribute user actions (click, apply, shortlist) to an impression ID.
   - `GET /growth/reconstruct/{impression_id}`: Reconstruct ranking position and outcome history.
 
+### Phase 3 Task 7 — Activation & Onboarding Funnel Optimization
+
+Task 7 optimizes candidate activation for brand-new users with zero interaction history.
+
+- **Cold-Start Recommendation Engine (`matching/cold_start_recommendation.py`):** Serves personalized first-session job matches using onboarding profile signals with guaranteed non-empty fallbacks.
+
+- **API Endpoints:**
+  - `POST /growth/cold-start-recommend`: Get tailored first-session job recommendations for new users.
+  - `GET /growth/cold-start-lift`: Retrieve measured conversion lift metrics.
+
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).
