@@ -379,6 +379,16 @@ Task 7 optimizes candidate activation for brand-new users with zero interaction 
   - `POST /growth/cold-start-recommend`: Get tailored first-session job recommendations for new users.
   - `GET /growth/cold-start-lift`: Retrieve measured conversion lift metrics.
 
+### Phase 3 Task 8 — Retention, Cohorts & Churn Prediction
+
+Task 8 builds churn prediction models to identify disengaging candidates and employers before churn occurs.
+
+- **Churn Prediction Engine (`matching/churn_prediction.py`):** Trains 14-day churn classifiers and calculates Precision-Recall lift metrics.
+
+- **API Endpoints:**
+  - `POST /growth/churn-eval`: Evaluate churn classifier performance and PR AUC lift.
+  - `POST /growth/at-risk-list`: Retrieve prioritized list of at-risk users with churn risk drivers.
+
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).
