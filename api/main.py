@@ -633,3 +633,27 @@ def cold_start_recommend_endpoint(req: OnboardingProfileRequest, top_k: int = 3)
 def cold_start_lift_endpoint(baseline_ctr: float = 0.12, optimized_ctr: float = 0.28):
     result = evaluate_cold_start_lift(baseline_ctr, optimized_ctr)
     return {"status": "SUCCESS", "data": result}
+
+from typing import List, Optional
+from pydantic import BaseModel
+from matching.churn_prediction import train_and_eval_churn_model, generate_at_risk_list
+
+class ChurnUserRecord(BaseModel):
+    entity_id: str
+    entity_type: Optional[str] = "CANDIDATE"
+    days_since_last_login: int
+    applications_last_30d: int
+    profile_completeness_pct: float
+    churn_label: Optional[int] = 0
+
+@app.post("/growth/churn-eval")
+def churn_eval_endpoint(records: List[ChurnUserRecord]):
+    records_data = [r.dict() for r in records]
+    result = train_and_eval_churn_model(records_data)
+    return {"status": "SUCCESS", "data": result}
+
+@app.post("/growth/at-risk-list")
+def at_risk_list_endpoint(records: List[ChurnUserRecord], threshold: float = 0.50):
+    records_data = [r.dict() for r in records]
+    result = generate_at_risk_list(records_data, threshold)
+    return {"status": "SUCCESS", "data": result}

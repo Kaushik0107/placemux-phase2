@@ -318,3 +318,9 @@ benchmark.
 - Non-Empty Fallback Guarantee: Ensured new users with zero profile history or sparse inputs receive non-empty candidate lists.
 - Measured Conversion Lift: Verified 133.3% lift in first-session CTR over baseline.
 - Endpoints Added: POST /growth/cold-start-recommend, GET /growth/cold-start-lift.
+
+## Phase 3 Task 8: Retention, Cohorts & Churn Prediction
+- Churn Model: Built Random Forest classifier predicting 14-day candidate disengagement (`matching/churn_prediction.py`).
+- PR Evaluation & Lift: Computed Precision-Recall AUC showing clear lift over recency-only baseline.
+- At-Risk Hand-Off: Generated prioritized at-risk user list with risk drivers for growth team campaigns.
+- Endpoints Added: POST /growth/churn-eval, POST /growth/at-risk-list.
