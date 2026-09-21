@@ -399,6 +399,16 @@ Task 9 establishes safe variant serving behind feature flags, holdouts, and guar
   - `POST /experiment/route`: Deterministically assign users to experiment variants or permanent holdouts.
   - `POST /experiment/eval-guardrails`: Evaluate live variant metrics against safety guardrails to trigger auto-halts.
 
+### Phase 3 Task 10 — Growth Integration & Experiment Readout
+
+Task 10 concludes Sprint B by providing automated A/B test hypothesis testing and ship/do-not-ship decision logic.
+
+- **Experiment Readout Engine (`matching/experiment_readout.py`):** Pre-registers hypotheses and conducts two-sample proportion z-tests to decide production rollouts.
+
+- **API Endpoints:**
+  - `POST /experiment/pre-register`: Pre-register experiment target metrics and hypothesis.
+  - `POST /experiment/readout`: Evaluate live A/B conversion data and generate SHIP / DO-NOT-SHIP decisions.
+
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).

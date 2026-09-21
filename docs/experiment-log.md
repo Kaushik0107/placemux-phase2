@@ -329,3 +329,9 @@ benchmark.
 - Variant Routing & Holdout: Implemented MD5 deterministic user hashing for sticky CONTROL/TREATMENT assignments and a 5% PERMANENT_HOLDOUT group (`matching/experimentation_platform.py`).
 - Guardrail Metrics: Built automated variant halting on relevance score drops (< 0.65) or error spikes (> 2%).
 - Endpoints Added: POST /experiment/route, POST /experiment/eval-guardrails.
+
+## Phase 3 Task 10: Growth Integration & Experiment Readout
+- Hypothesis Pre-registration: Implemented experiment registry specifying primary metrics (CTR) and target lift thresholds (`matching/experiment_readout.py`).
+- Statistical Readout Engine: Computed relative lift, z-score, p-value, and statistical significance on live A/B traffic.
+- Automated Decision: Built SHIP / DO-NOT-SHIP logic combining statistical significance and guardrail safety checks.
+- Endpoints Added: POST /experiment/pre-register, POST /experiment/readout.
