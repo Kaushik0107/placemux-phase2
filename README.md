@@ -389,6 +389,16 @@ Task 8 builds churn prediction models to identify disengaging candidates and emp
   - `POST /growth/churn-eval`: Evaluate churn classifier performance and PR AUC lift.
   - `POST /growth/at-risk-list`: Retrieve prioritized list of at-risk users with churn risk drivers.
 
+### Phase 3 Task 9 — Experimentation Platform, Feature Flags & Guardrails
+
+Task 9 establishes safe variant serving behind feature flags, holdouts, and guardrail metrics.
+
+- **Experimentation Engine (`matching/experimentation_platform.py`):** Handles sticky user hash-routing, permanent holdouts, and automated experiment halting.
+
+- **API Endpoints:**
+  - `POST /experiment/route`: Deterministically assign users to experiment variants or permanent holdouts.
+  - `POST /experiment/eval-guardrails`: Evaluate live variant metrics against safety guardrails to trigger auto-halts.
+
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).

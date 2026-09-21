@@ -657,3 +657,26 @@ def at_risk_list_endpoint(records: List[ChurnUserRecord], threshold: float = 0.5
     records_data = [r.dict() for r in records]
     result = generate_at_risk_list(records_data, threshold)
     return {"status": "SUCCESS", "data": result}
+
+from pydantic import BaseModel
+from matching.experimentation_platform import assign_user_to_variant, evaluate_experiment_guardrails
+
+class RouteRequest(BaseModel):
+    user_id: str
+    experiment_name: str = "Ranking_V2_Experiment"
+    holdout_pct: float = 0.05
+
+class GuardrailEvalRequest(BaseModel):
+    variant: str = "TREATMENT"
+    mean_relevance_score: float
+    error_rate: float = 0.0
+
+@app.post("/experiment/route")
+def route_user_endpoint(req: RouteRequest):
+    result = assign_user_to_variant(req.user_id, req.experiment_name, req.holdout_pct)
+    return {"status": "SUCCESS", "data": result}
+
+@app.post("/experiment/eval-guardrails")
+def eval_guardrails_endpoint(req: GuardrailEvalRequest):
+    result = evaluate_experiment_guardrails(req.dict())
+    return {"status": "SUCCESS", "data": result}

@@ -324,3 +324,8 @@ benchmark.
 - PR Evaluation & Lift: Computed Precision-Recall AUC showing clear lift over recency-only baseline.
 - At-Risk Hand-Off: Generated prioritized at-risk user list with risk drivers for growth team campaigns.
 - Endpoints Added: POST /growth/churn-eval, POST /growth/at-risk-list.
+
+## Phase 3 Task 9: Experimentation Platform, Feature Flags & Guardrails
+- Variant Routing & Holdout: Implemented MD5 deterministic user hashing for sticky CONTROL/TREATMENT assignments and a 5% PERMANENT_HOLDOUT group (`matching/experimentation_platform.py`).
+- Guardrail Metrics: Built automated variant halting on relevance score drops (< 0.65) or error spikes (> 2%).
+- Endpoints Added: POST /experiment/route, POST /experiment/eval-guardrails.
