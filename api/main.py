@@ -680,3 +680,40 @@ def route_user_endpoint(req: RouteRequest):
 def eval_guardrails_endpoint(req: GuardrailEvalRequest):
     result = evaluate_experiment_guardrails(req.dict())
     return {"status": "SUCCESS", "data": result}
+
+from pydantic import BaseModel
+from matching.experiment_readout import pre_register_hypothesis, evaluate_ab_test_readout
+
+class PreRegisterRequest(BaseModel):
+    experiment_id: str
+    hypothesis: str
+    primary_metric: str = "application_ctr"
+    target_lift_pct: float = 5.0
+    alpha: float = 0.05
+
+class ReadoutRequest(BaseModel):
+    experiment_id: str
+    control_conversions: int
+    control_impressions: int
+    treatment_conversions: int
+    treatment_impressions: int
+    guardrail_breached: bool = False
+
+@app.post("/experiment/pre-register")
+def pre_register_endpoint(req: PreRegisterRequest):
+    result = pre_register_hypothesis(
+        req.experiment_id, req.hypothesis, req.primary_metric, req.target_lift_pct, req.alpha
+    )
+    return result
+
+@app.post("/experiment/readout")
+def readout_endpoint(req: ReadoutRequest):
+    result = evaluate_ab_test_readout(
+        req.experiment_id,
+        req.control_conversions,
+        req.control_impressions,
+        req.treatment_conversions,
+        req.treatment_impressions,
+        req.guardrail_breached
+    )
+    return {"status": "SUCCESS", "data": result}
