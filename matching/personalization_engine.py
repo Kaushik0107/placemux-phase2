@@ -118,3 +118,14 @@ def evaluate_offline_recommendation_quality(num_candidates: int = 100, k: int = 
         "popularity_collapse_detected": coverage_pct < 30.0,
         "explanation": f"Achieved Precision@{k} of {precision_at_k} ({((precision_at_k - baseline_precision) / baseline_precision)*100:.1f}% lift) with {coverage_pct:.1f}% catalog coverage."
     }
+if __name__ == "__main__":
+    print("--- 1. CANDIDATE -> JOBS RECOMMENDATIONS ---")
+    cand_input = {"candidate_id": "STU_888", "skills": ["Python", "FastAPI"], "preferred_category": "Backend"}
+    print(recommend_jobs_for_candidate(cand_input))
+
+    print("\n--- 2. COMPANY -> CANDIDATES RECOMMENDATIONS ---")
+    comp_input = {"job_id": "JOB_501", "required_skills": ["Python", "FastAPI"], "min_experience_years": 2}
+    print(recommend_candidates_for_company(comp_input))
+
+    print("\n--- 3. OFFLINE RECOMMENDATION QUALITY EVALUATION ---")
+    print(evaluate_offline_recommendation_quality())
