@@ -717,3 +717,20 @@ def readout_endpoint(req: ReadoutRequest):
         req.guardrail_breached
     )
     return {"status": "SUCCESS", "data": result}
+
+from typing import List
+from pydantic import BaseModel
+from matching.ltr_ranking_v2 import train_and_eval_ltr_model
+
+class ImpressionDataPoint(BaseModel):
+    position: int
+    skill_match_score: float
+    experience_match_score: float
+    role_category_fit: float
+    conversion_label: float  # 1.0 for click/apply, 0.0 for ignore
+
+@app.post("/ranking/eval-offline")
+def eval_offline_ranking_endpoint(impressions: List[ImpressionDataPoint], k: int = 5):
+    data = [imp.dict() for imp in impressions]
+    result = train_and_eval_ltr_model(data, k)
+    return {"status": "SUCCESS", "data": result}
