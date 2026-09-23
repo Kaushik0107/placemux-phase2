@@ -416,8 +416,20 @@ Task 11 upgrades ranking intelligence to a de-biased Learning-to-Rank (LTR) syst
 - **LTR Engine (`matching/ltr_ranking_v2.py`):** Trains pairwise rankers with IPS position-bias correction and computes nDCG@k evaluation metrics.
 
 - **API Endpoints:**
+  - `POST /ranking/ltr-score`: Score and rank candidate-job match pairs using the LTR engine.
   - `POST /ranking/eval-offline`: Benchmark LTR ranker against baseline heuristic using nDCG@k.
 
+### Phase 3 Task 12 — Personalization & Recommendation Engine
+
+Task 12 implements explainable candidate-job recommendations and diversity/coverage evaluation.
+
+- **Personalization Engine (`matching/personalization_engine.py`):** Generates two-sided recommendations with explainable match rationales and latency tracking.
+
+- **API Endpoints:**
+  - `POST /recommendations/candidate`: Retrieve personalized job recommendations for candidates.
+  - `POST /recommendations/eval-offline`: Evaluate Precision@k, coverage, and diversity against baselines.
+  - `POST /recommendations/company`: Retrieve personalized candidate recommendations for employers.
+  
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).

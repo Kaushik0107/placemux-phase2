@@ -734,3 +734,53 @@ def eval_offline_ranking_endpoint(impressions: List[ImpressionDataPoint], k: int
     data = [imp.dict() for imp in impressions]
     result = train_and_eval_ltr_model(data, k)
     return {"status": "SUCCESS", "data": result}
+
+from matching.ltr_ranking_v2 import train_and_eval_ltr_model, predict_ltr_scores  # <--- Import predict_ltr_scores
+
+class LTRPredictItem(BaseModel):
+    candidate_id: str
+    job_id: str
+    skill_match_score: float
+    experience_match_score: float
+    role_category_fit: float
+
+@app.post("/ranking/ltr-score")
+def predict_ltr_score_endpoint(candidates: List[LTRPredictItem]):
+    data = [c.dict() for c in candidates]
+    result = predict_ltr_scores(data)
+    return {"status": "SUCCESS", "data": result}
+
+from typing import List, Optional
+from pydantic import BaseModel
+from matching.personalization_engine import recommend_jobs_for_candidate, evaluate_offline_recommendation_quality
+
+class CandidateProfileReq(BaseModel):
+    candidate_id: str
+    skills: List[str]
+    preferred_category: Optional[str] = None
+
+@app.post("/recommendations/candidate")
+def recommend_candidate_endpoint(req: CandidateProfileReq, top_k: int = 3):
+    result = recommend_jobs_for_candidate(req.dict(), top_k)
+    return {"status": "SUCCESS", "data": result}
+
+@app.post("/recommendations/eval-offline")
+def eval_recommendation_quality_endpoint(num_candidates: int = 100, k: int = 3):
+    result = evaluate_offline_recommendation_quality(num_candidates, k)
+    return {"status": "SUCCESS", "data": result}
+
+from matching.personalization_engine import (
+    recommend_jobs_for_candidate,
+    recommend_candidates_for_company,  # <--- Import this
+    evaluate_offline_recommendation_quality
+)
+
+class CompanyJobReq(BaseModel):
+    job_id: str
+    required_skills: List[str]
+    min_experience_years: Optional[int] = 0
+
+@app.post("/recommendations/company")
+def recommend_company_endpoint(req: CompanyJobReq, top_k: int = 3):
+    result = recommend_candidates_for_company(req.dict(), top_k)
+    return {"status": "SUCCESS", "data": result}
