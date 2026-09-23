@@ -335,3 +335,9 @@ benchmark.
 - Statistical Readout Engine: Computed relative lift, z-score, p-value, and statistical significance on live A/B traffic.
 - Automated Decision: Built SHIP / DO-NOT-SHIP logic combining statistical significance and guardrail safety checks.
 - Endpoints Added: POST /experiment/pre-register, POST /experiment/readout.
+
+## Phase 3 Task 11: Matching & Ranking v2 (Learning-to-Rank)
+- LTR Model: Built Gradient Boosted pairwise LTR scoring model trained on impression interaction logs (`matching/ltr_ranking_v2.py`).
+- Position-Bias Correction: Integrated Inverse Propensity Scoring (IPS) to de-bias historical rank positions.
+- Offline Evaluation: Benchmark nDCG@5 showing clear metric lift over the baseline heuristic ranker.
+- Endpoints Added: POST /ranking/eval-offline.

@@ -409,6 +409,15 @@ Task 10 concludes Sprint B by providing automated A/B test hypothesis testing an
   - `POST /experiment/pre-register`: Pre-register experiment target metrics and hypothesis.
   - `POST /experiment/readout`: Evaluate live A/B conversion data and generate SHIP / DO-NOT-SHIP decisions.
 
+### Phase 3 Task 11 — Matching & Ranking v2 (Learning-to-Rank)
+
+Task 11 upgrades ranking intelligence to a de-biased Learning-to-Rank (LTR) system.
+
+- **LTR Engine (`matching/ltr_ranking_v2.py`):** Trains pairwise rankers with IPS position-bias correction and computes nDCG@k evaluation metrics.
+
+- **API Endpoints:**
+  - `POST /ranking/eval-offline`: Benchmark LTR ranker against baseline heuristic using nDCG@k.
+
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).
