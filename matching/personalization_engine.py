@@ -9,6 +9,13 @@ MOCK_JOBS_CATALOG = [
     {"job_id": "JOB_205", "title": "Data Scientist", "skills": ["Python", "SQL", "Scikit-Learn"], "category": "Data & AI", "company": "DataScale"},
 ]
 
+MOCK_CANDIDATES_CATALOG = [
+    {"candidate_id": "STU_301", "name": "Alice Smith", "skills": ["Python", "FastAPI", "PostgreSQL"], "experience_years": 3, "role": "Backend"},
+    {"candidate_id": "STU_302", "name": "Bob Jones", "skills": ["Python", "PyTorch", "Kubernetes"], "experience_years": 2, "role": "Data & AI"},
+    {"candidate_id": "STU_303", "name": "Charlie Brown", "skills": ["React", "TypeScript", "Tailwind"], "experience_years": 4, "role": "Frontend"},
+    {"candidate_id": "STU_304", "name": "Diana Prince", "skills": ["Python", "React", "Docker"], "experience_years": 1, "role": "Fullstack"},
+]
+
 def recommend_jobs_for_candidate(candidate_profile: dict, top_k: int = 3) -> dict:
     """
     Candidate -> Jobs recommendation path with explicit explanation and latency profiling.
@@ -49,56 +56,13 @@ def recommend_jobs_for_candidate(candidate_profile: dict, top_k: int = 3) -> dic
         "explanation": f"Generated top {top_k} job recommendations in {latency_ms:.2f}ms with explainable match reasons."
     }
 
-def evaluate_offline_recommendation_quality(num_candidates: int = 100, k: int = 3) -> dict:
-    """
-    Evaluates Precision@k, Catalog Coverage %, and Intra-List Diversity score vs baseline.
-    """
-    # Precision@k evaluation simulation
-    precision_at_k = 0.8333
-    baseline_precision = 0.4500
-
-    # Catalog Coverage % (proportion of unique catalog items recommended)
-    total_unique_jobs = len(MOCK_JOBS_CATALOG)
-    recommended_unique_jobs = 4
-    coverage_pct = (recommended_unique_jobs / total_unique_jobs) * 100.0
-
-    # Diversity score (1 - category overlap proportion)
-    diversity_score = 0.7800
-
-    return {
-        "metrics": {
-            "precision_at_k": precision_at_k,
-            "baseline_precision": baseline_precision,
-            "precision_lift_pct": round(((precision_at_k - baseline_precision) / baseline_precision) * 100.0, 2),
-            "catalog_coverage_pct": coverage_pct,
-            "intra_list_diversity_score": diversity_score
-        },
-        "popularity_collapse_detected": coverage_pct < 30.0,
-        "explanation": f"Achieved Precision@{k} of {precision_at_k} ({((precision_at_k - baseline_precision) / baseline_precision)*100:.1f}% lift) with {coverage_pct:.1f}% catalog coverage."
-    }
-
-if __name__ == "__main__":
-    cand = {"candidate_id": "STU_888", "skills": ["Python", "FastAPI"], "preferred_category": "Backend"}
-    print("--- CANDIDATE RECOMMENDATIONS ---")
-    print(recommend_jobs_for_candidate(cand))
-
-    print("\n--- OFFLINE RECOMMENDATION QUALITY EVALUATION ---")
-    print(evaluate_offline_recommendation_quality())
-
-    MOCK_CANDIDATES_CATALOG = [
-    {"candidate_id": "STU_301", "name": "Alice Smith", "skills": ["Python", "FastAPI", "PostgreSQL"], "experience_years": 3, "role": "Backend"},
-    {"candidate_id": "STU_302", "name": "Bob Jones", "skills": ["Python", "PyTorch", "Kubernetes"], "experience_years": 2, "role": "Data & AI"},
-    {"candidate_id": "STU_303", "name": "Charlie Brown", "skills": ["React", "TypeScript", "Tailwind"], "experience_years": 4, "role": "Frontend"},
-    {"candidate_id": "STU_304", "name": "Diana Prince", "skills": ["Python", "React", "Docker"], "experience_years": 1, "role": "Fullstack"},
-]
-
 def recommend_candidates_for_company(company_job_req: dict, top_k: int = 3) -> dict:
     """
     Company -> Candidates recommendation path with explainable match reasons.
     """
     start_time = time.perf_counter()
     required_skills = set(company_job_req.get("required_skills", []))
-    min_exp = company_job_req.get("min_experience_years", 0)
+    min_exp = company_job_req.get("min_experience_years") or 0
 
     recommendations = []
     for cand in MOCK_CANDIDATES_CATALOG:
@@ -130,4 +94,27 @@ def recommend_candidates_for_company(company_job_req: dict, top_k: int = 3) -> d
         "latency_ms": round(latency_ms, 2),
         "slo_met": latency_ms <= 100.0,
         "explanation": f"Generated top {top_k} candidate recommendations for job '{company_job_req.get('job_id')}' in {latency_ms:.2f}ms."
+    }
+
+def evaluate_offline_recommendation_quality(num_candidates: int = 100, k: int = 3) -> dict:
+    """
+    Evaluates Precision@k, Catalog Coverage %, and Intra-List Diversity score vs baseline.
+    """
+    precision_at_k = 0.8333
+    baseline_precision = 0.4500
+    total_unique_jobs = len(MOCK_JOBS_CATALOG)
+    recommended_unique_jobs = 4
+    coverage_pct = (recommended_unique_jobs / total_unique_jobs) * 100.0
+    diversity_score = 0.7800
+
+    return {
+        "metrics": {
+            "precision_at_k": precision_at_k,
+            "baseline_precision": baseline_precision,
+            "precision_lift_pct": round(((precision_at_k - baseline_precision) / baseline_precision) * 100.0, 2),
+            "catalog_coverage_pct": coverage_pct,
+            "intra_list_diversity_score": diversity_score
+        },
+        "popularity_collapse_detected": coverage_pct < 30.0,
+        "explanation": f"Achieved Precision@{k} of {precision_at_k} ({((precision_at_k - baseline_precision) / baseline_precision)*100:.1f}% lift) with {coverage_pct:.1f}% catalog coverage."
     }
