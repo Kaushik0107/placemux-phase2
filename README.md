@@ -430,6 +430,16 @@ Task 12 implements explainable candidate-job recommendations and diversity/cover
   - `POST /recommendations/eval-offline`: Evaluate Precision@k, coverage, and diversity against baselines.
   - `POST /recommendations/company`: Retrieve personalized candidate recommendations for employers.
   
+  ### Phase 3 Task 13 — Semantic Search & Vector Retrieval
+
+Task 13 ships hybrid vector search over candidate resumes and JDs.
+
+- **Semantic Search Engine (`matching/semantic_search.py`):** Combines dense vector cosine similarity with sparse keyword matching using tuned weighting ($\alpha=0.7$).
+
+- **API Endpoints:**
+  - `POST /search/hybrid`: Execute weighted hybrid semantic and keyword queries.
+  - `GET /search/eval`: Retrieve offline retrieval benchmark metrics comparing semantic vs keyword MRR.
+
 #### Technical Implementation
 
 - **Hardened Classifier (`matching/proctoring_hardening.py`):** Trains an ensemble model on behavioral features (`gaze_off_screen_ratio`, `audio_anomaly_count`, `tab_switches`, `session_duration`).

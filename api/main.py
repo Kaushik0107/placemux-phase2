@@ -784,3 +784,20 @@ class CompanyJobReq(BaseModel):
 def recommend_company_endpoint(req: CompanyJobReq, top_k: int = 3):
     result = recommend_candidates_for_company(req.dict(), top_k)
     return {"status": "SUCCESS", "data": result}
+
+from matching.semantic_search import hybrid_search, evaluate_retrieval_performance
+
+class HybridSearchRequest(BaseModel):
+    query: str
+    alpha: float = 0.7
+    top_k: int = 3
+
+@app.post("/search/hybrid")
+def hybrid_search_endpoint(req: HybridSearchRequest):
+    result = hybrid_search(req.query, req.alpha, req.top_k)
+    return {"status": "SUCCESS", "data": result}
+
+@app.get("/search/eval")
+def eval_search_endpoint():
+    result = evaluate_retrieval_performance()
+    return {"status": "SUCCESS", "data": result}
